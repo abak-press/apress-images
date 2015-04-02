@@ -1,6 +1,6 @@
 # Apress::Images
 
-[![Dolly](http://dolly.railsc.ru/badges/abak-press/apress-images/master)](http://dolly.railsc.ru/projects/83/builds/latest/?ref=master)
+<a href="http://dolly.railsc.ru/projects/83/builds/latest/?ref=master"><img src="http://dolly.railsc.ru/badges/abak-press/apress-images/master" height="18"></a>
 
 Предоставляет функционал для загрузки и прикрепления изображений
 
