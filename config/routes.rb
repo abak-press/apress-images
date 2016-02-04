@@ -4,5 +4,6 @@ Rails.application.routes.draw do
   scope constraints: {domain: :current}, module: 'apress/images' do
     post 'images' => 'images#upload', as: :images_upload
     get 'images/previews' => 'images#previews', as: :preview_images
+    delete 'images' => 'images#destroy', as: :destroy_image
   end
 end
