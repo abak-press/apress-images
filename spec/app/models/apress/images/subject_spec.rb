@@ -7,53 +7,34 @@ RSpec.describe Subject, type: :model do
   it { expect(subject).to have_one(:cover).class_name('SubjectImage') }
   it { expect(described_class.reflect_on_association(:cover).options[:as]).to eq(:subject) }
   it { expect(subject).to accept_nested_attributes_for(:cover).allow_destroy(true) }
-  it { expect(subject.cover).to be_kind_of SubjectImage }
 
-  context 'when subject is new record' do
-    context 'when create without cover' do
-      let(:subject) { build :subject }
+  context 'when initializing and saving subject with image assigned through nested attributes' do
+    let(:image) { create :subject_image }
+    let(:subject) { Subject.new(attributes_for(:subject).merge(cover_attributes: {'id' => image.id})) }
 
-      before { subject.save }
+    before { subject.save }
 
-      it { expect(subject.persisted?).to be_truthy }
-      it { expect(subject.cover.persisted?).to be_falsey }
-    end
-
-    context 'when create with cover' do
-      let(:image) { create :subject_image }
-      let(:subject) { described_class.new(attributes_for(:subject).merge(cover_attributes: {'id' => image.id})) }
-
-      before { subject.save }
-
-      it { expect(subject.persisted?).to be_truthy }
-      it { expect(subject.cover.persisted?).to be_truthy }
-      it { expect(subject.cover).to eq image }
+    it do
+      expect(subject).to be_persisted
+      expect(subject.cover).to be_persisted
+      expect(subject.cover).to eq(image)
     end
   end
 
   context 'when subject exists' do
-    context 'when subject has not cover' do
-      context 'when update without cover' do
-        let(:subject) { create :subject }
+    context 'when updating subject with image through nested attributes' do
+      let(:subject) { create :subject }
+      let(:image) { create :subject_image, subject_id: subject.id, subject_type: subject.class.name }
 
-        before { subject.save }
-
-        it { expect(subject.persisted?).to be_truthy }
-        it { expect(subject.cover.persisted?).to be_falsey }
+      before do
+        subject.assign_attributes(cover_attributes: {'id' => image.id})
+        subject.save
       end
 
-      context 'when update with cover' do
-        let(:subject) { create :subject }
-        let(:image) { create :subject_image, subject_id: subject.id, subject_type: subject.class.name }
-
-        before do
-          subject.assign_attributes(cover_attributes: {'id' => image.id})
-          subject.save
-        end
-
-        it { expect(subject.persisted?).to be_truthy }
-        it { expect(subject.cover.persisted?).to be_truthy }
-        it { expect(subject.cover).to eq image }
+      it do
+        expect(subject).to be_persisted
+        expect(subject.cover).to be_persisted
+        expect(subject.cover).to eq(image)
       end
     end
 
