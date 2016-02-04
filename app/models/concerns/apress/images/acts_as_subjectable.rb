@@ -26,14 +26,8 @@ module Apress
         #
         #      accepts_nested_attributes_for :cover, allow_destroy: true
         #
-        #      def cover_with_build
-        #         cover_without_build || build_cover()
-        #      end
-        #      alias_method_chain :cover, :build
-        #
         #      def cover_attributes=(attributes)
-        #        self.cover = Apress::Deals::OfferCover.find(attributes['id']) \
-        #          if attributes['id'].present? && new_record?
+        #        self.cover = Apress::Deals::OfferCover.find(attributes['id']) if attributes['id'].present?
         #        assign_nested_attributes_for_one_to_one_association(:cover, attributes)
         #      end
         #
@@ -50,23 +44,12 @@ module Apress
           return if type != :has_one
 
           class_eval <<-RUBY, __FILE__, __LINE__ + 1
-            # Public: Получение уже созданной записи картинки или её инициализация.
-            #
-            # Returns Image.
-            def #{name}_with_build
-              #{name}_without_build || build_#{name}(#{options[:conditions]})
-            end
-            alias_method_chain :#{name}, :build
-          RUBY
-
-          class_eval <<-RUBY, __FILE__, __LINE__ + 1
             self.send :include, (Module.new do
               extend ActiveSupport::Concern
 
               included do
                 def #{name}_attributes=(attributes)
-                  self.#{name} = #{options[:class_name]}.find(attributes['id']) \\
-                    if attributes['id'].present? && new_record?
+                  self.#{name} = #{options[:class_name]}.find(attributes['id']) if attributes['id'].present?
                   assign_nested_attributes_for_one_to_one_association(:#{name}, attributes)
                 end
               end
