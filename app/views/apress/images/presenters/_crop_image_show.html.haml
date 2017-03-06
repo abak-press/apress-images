@@ -1,1 +1,14 @@
+.js-images-preview.dn
+  .images-preview-wrapper.js-images-preview-wrapper
+    %img.js-images-preview-image
+    .images-preview-overlay
+    .images-preview-crop.js-images-preview-crop
+      %img.images-preview-image.js-images-preview-image
+  .images-preview-buttons
+    %button.js-images-preview-save-cover{type: 'button'}
+      = t('controllers.blog_posts.form.cover.save')
+    %button.js-images-preview-close-preview{type: 'button'}
+      = t('controllers.blog_posts.form.cover.back')
 
+.js-images-preview-error-popup.dn
+  %p= t('controllers.blog_posts.form.cover.size_message')

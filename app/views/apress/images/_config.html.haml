@@ -10,5 +10,10 @@
       model: #{options.fetch(:model).to_json},
       subject_type: #{options.fetch(:subject_type).to_json},
       subject_id: #{options.fetch(:subject_id).to_json}
-    }
+    },
+    crop_enable: #{options.fetch(:crop_enable)},
+    maxWidth: #{options.fetch(:max_width)},
+    minWidth: #{options.fetch(:min_width)},
+    maxHeight: #{options.fetch(:max_height)},
+    maxHeight: #{options.fetch(:max_height)}
   };

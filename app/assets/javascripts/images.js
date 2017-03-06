@@ -29,7 +29,14 @@ app.modules.images = (function(self) {
     },
     _images = [],
     _process = false,
-    _$imagesContainer;
+    _$imagesContainer,
+    crop = app.config.images.crop_enable || false,
+    maxWidth = app.config.images.max_width || null,
+    minWidth  = app.config.images.min_width || null,
+    maxHeight = app.config.images.max_height || null,
+    minHeight = app.config.images.min_height || null,
+    _file = null,
+    _scale = 1;
 
   _images.add = function(params) {
     this.push(params);
@@ -133,7 +140,82 @@ app.modules.images = (function(self) {
     _$imagesContainer = $($(el).data('container'));
   }
 
-  function _listener() {
+  function _showDialog() {
+    $('.js-cover-blog-preview-popup').dialog({
+      modal: true,
+      width: 'auto',
+      height: 'auto'
+    });
+  }
+
+  function _checkSizes() {
+    if (width >= minWidth && width <= maxWidth) {
+      if (height >= minHeight && height <= maxHeight) {
+        _sendImg();
+      } else if (height < minHeight) {
+        _sendImg();
+      } else if (height > maxHeight) {
+        _showDialog();
+      }
+    } else if (width < minWidth) {
+      if (height >= minHeight && height <= maxHeight) {
+        _sendImg();
+      } else if (height < minHeight) {
+        _sendImg();
+      } else if (height > maxHeight) {
+        _showDialog();
+      }
+    } else if (width > maxWidth) {
+      if (height >= minHeight && height <= maxHeight) {
+        _showDialog();
+      } else if (height < minHeight) {
+        _showDialog();
+      } else if (height > maxHeight) {
+        _showDialog();
+      }
+    }
+  }
+
+
+
+
+  function _saveImage(size) {
+    var
+      ctx,
+      canvas = $('<canvas>')[0],
+      img = $('.js-images-preview-image')[0],
+      $crop = $('.js-images-preview-crop');
+
+    if (!size) {
+      canvas.width = $crop.width() * _scale;
+      canvas.height = $crop.height() * _scale;
+    } else {
+      canvas.width = size.width;
+      canvas.height = size.height;
+    }
+    ctx = canvas.getContext('2d');
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(
+      img,
+      parseInt(parseInt(!size ? $crop[0].style.left : 0) * _scale),
+      parseInt(parseInt(!size ? $crop[0].style.top : 0) * _scale),
+      canvas.width, canvas.height,
+      0, 0,
+      canvas.width, canvas.height
+    );
+
+    canvas.toBlob(function(blob) {
+      _save(blob, _file.name);
+    }, _file.type, 1.0);
+  }
+
+
+
+
+
+
+  function _listeners() {
     $doc
       .on('click', _options.selectors.buttonUpload, function(event) {
         _setContainer(this);
@@ -147,7 +229,15 @@ app.modules.images = (function(self) {
             files.length && _uploadFiles(files);
           });
         }
+      })
+      .on('click', '.js-images-preview-close-preview', function() {
+        $('.js-images-preview').dialog('close');
+      })
+      .on('click', '.js-images-preview-save-cover', function() {
+        $('.js-images-preview').dialog('close');
       });
+
+
 
     FileAPI.event.on($(_options.selectors.fileInput)[0], 'change', function(event) {
       if ($(this).val()) {
@@ -157,7 +247,7 @@ app.modules.images = (function(self) {
   }
 
   self.load = function() {
-    _listener();
+    _listeners();
   };
 
   return self;
