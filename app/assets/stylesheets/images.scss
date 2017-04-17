@@ -1,0 +1,21 @@
+.images-preview {
+  &-wrapper { position: relative; width: 600px; overflow: hidden; margin-top: 15px; }
+  &-image { width:100%; height: 100%; background-position: 50% 50% !important; background-repeat: no-repeat !important; }
+  &-overlay{ position: absolute; width: 100%; height: 100%; top: 0; left: 0; opacity: 0.8; background-color: rgb(51, 51, 51); }
+  &-crop{ position: absolute !important; top: 0; left: 0; overflow: hidden; margin: 1px; }
+  .cover-blog-image{ position: absolute; left: 0; top: 0; }
+  &-buttons { text-align: center; margin: 10px 0; }
+
+  #topLeft, #topCenter, #topRight, #leftCenter, #rightCenter, #bottomLeft, #bottomCenter, #bottomRight { position: absolute; width: 10px; height: 10px; background-color: #fff; border-radius: 5px; border: 1px solid #666; }
+
+  #topLeft { top: -5px; left: -5px }
+  #topCenter { top: -5px; left: 50%; margin-left: -5px; }
+  #topRight { top: -5px right: -5px; }
+
+  #leftCenter { top: 50%; margin-top: -5px; left: -5px; }
+  #rightCenter { top: 50%; margin-top: -5px; right: -5px; }
+
+  #bottomLeft { bottom: -5px; left: -5px; }
+  #bottomCenter { bottom: -5px; left: 50%; margin-left: -5px; }
+  #bottomRight { bottom: -5px; right: -5px; }
+}
