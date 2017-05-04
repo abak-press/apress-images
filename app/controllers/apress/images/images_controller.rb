@@ -37,6 +37,17 @@ module Apress
         render json: {ids: ids}
       end
 
+      # Public: destroy an image. Expects to receive :id in params.
+      #
+      # Returns http headers with the status code.
+      def destroy
+        if model.destroy_all(id: params.require(:id)).present?
+          head :no_content
+        else
+          head :unprocessable_entity
+        end
+      end
+
       protected
 
       def uploader

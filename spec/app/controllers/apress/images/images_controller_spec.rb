@@ -41,4 +41,18 @@ RSpec.describe Apress::Images::ImagesController, type: :controller do
       it { expect(JSON.parse(response.body)['status']).to eq 'error' }
     end
   end
+
+  describe '#destroy' do
+    context 'when success' do
+      before { xhr :delete, :destroy, model: 'SubjectImage', id: image.id }
+
+      it { expect(response).to have_http_status(:no_content) }
+    end
+
+    context 'when failure' do
+      before { xhr :delete, :destroy, model: 'SubjectImage', id: image.id + 1 }
+
+      it { expect(response).to have_http_status(:unprocessable_entity) }
+    end
+  end
 end
