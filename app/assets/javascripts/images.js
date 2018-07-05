@@ -99,9 +99,14 @@ app.modules.images = (function(self) {
         _processedImage = file;
         break;
 
-      case fileInfo.width < app.config.images.cropOptions['min_width'] ||
-      fileInfo.height < app.config.images.cropOptions['min_height']:
+      case fileInfo.width < app.config.images.cropImageTooSmallConditions['min_width'] ||
+      fileInfo.height < app.config.images.cropImageTooSmallConditions['min_height']:
         $doc.trigger('imageTooSmall:images', _$imagesContainer);
+        _uploadFiles([file], app.config.images.uploadData);
+        break;
+
+      case fileInfo.width >= app.config.images.cropImageTooSmallConditions['min_width'] ||
+      fileInfo.height >= app.config.images.cropImageTooSmallConditions['min_height']:
         _uploadFiles([file], app.config.images.uploadData);
         break;
 

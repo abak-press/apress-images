@@ -7,6 +7,7 @@
     uploadUrl: #{images_upload_url.to_json},
     cropable: #{options.fetch(:cropable)},
     cropOptions: #{options.fetch(:crop_options).to_json},
+    cropImageTooSmallConditions: #{options.fetch(:crop_image_too_small_conditions).to_json},
     originalStyle: {
       width: #{options.fetch(:original_style_width).to_json},
       height: #{options.fetch(:original_style_height).to_json}

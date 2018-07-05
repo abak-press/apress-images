@@ -35,6 +35,7 @@ module Apress
           subject_id: options.fetch(:subject_id, ''),
           cropable: options.fetch(:cropable, false),
           crop_options: options.fetch(:crop_options, ''),
+          crop_image_too_small_conditions: options.fetch(:crop_image_too_small_conditions, ''),
           original_style_width: options[:original_style_width],
           original_style_height: options[:original_style_height]
         }
