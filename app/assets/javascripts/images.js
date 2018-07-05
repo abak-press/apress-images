@@ -105,8 +105,8 @@ app.modules.images = (function(self) {
         _uploadFiles([file], app.config.images.uploadData);
         break;
 
-      case fileInfo.width > app.config.images.cropImageTooSmallConditions['min_width'] ||
-      fileInfo.height > app.config.images.cropImageTooSmallConditions['min_height']:
+      case fileInfo.width >= app.config.images.cropImageTooSmallConditions['min_width'] ||
+      fileInfo.height >= app.config.images.cropImageTooSmallConditions['min_height']:
         _uploadFiles([file], app.config.images.uploadData);
         break;
 
