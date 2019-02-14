@@ -5,12 +5,12 @@ require 'spec_helper'
 describe Apress::Images::UploadService do
   let(:subject_type) { "Subject" }
 
-  let(:dummy_filepath) { Rails.root.join('../fixtures/images/sample_image.jpg') }
+  let(:dummy_filepath) { Rails.root.join('../fixtures/images/sample_cropable_image.jpg') }
 
   let(:image) do
     fixture_file_upload(dummy_filepath, 'image/jpeg', :binary)
   end
-  
+
   let(:image_url) do
     'http://example.com/file.jpg'.tap do |url|
       stub_request(:any, url).

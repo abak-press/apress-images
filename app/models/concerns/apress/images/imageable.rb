@@ -1,5 +1,3 @@
-# coding: utf-8
-
 module Apress
   module Images
     # Public: Добавляет к сущностям возможность прикреплять картинки
@@ -20,19 +18,12 @@ module Apress
       # Public: опции по-умолчанию
       DEFAULT_OPTIONS = {
         default_style: :thumb,
-        processors: [:watermark],
-        convert_options: {
-          original: '-interlace Plane -strip'
-        },
         styles: {
           original: {
-            geometry: '1280x1024>',
-            animated: false
+            geometry: '1280x1024>'
           },
           thumb: {
-            geometry: '90x90>',
-            animated: false,
-            watermark_path: WATERMARK_SMALL
+            geometry: '90x90>'
           }
         },
         url: '/system/images/:class/:id_partition_:style.:extension',

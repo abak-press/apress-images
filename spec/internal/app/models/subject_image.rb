@@ -5,12 +5,10 @@ class SubjectImage < ActiveRecord::Base
     attachment_options: {
       styles: {
         big: {
-          geometry: '600x600>',
-          animated: false
+          geometry: '600x600>'
         },
         small: {
-          geometry: '50x50>',
-          animated: false
+          geometry: '50x50>'
         }
       }
     },

@@ -1,5 +1,3 @@
-# coding: utf-8
-
 module Apress
   module Images
     class Engine < ::Rails::Engine
@@ -16,7 +14,7 @@ module Apress
           http_open_timeout: 5.seconds,
           http_read_timeout: 5.seconds,
           default_convert_options: {
-            all: "-filter Triangle -define filter:support=2 -dither None -quality 80 -quiet"
+            all: '-strip -quality 80 -quiet'
           },
           # Для каких типов файлов форсировать определение содержимого
           force_content_type_detect: (
@@ -29,7 +27,22 @@ module Apress
             MIME::Types['image/jpeg'] +
             MIME::Types['image/gif'] +
             MIME::Types['image/png']
-          ).to_set
+          ).to_set,
+          compressor_options: {
+            verbose: false,
+            skip_missing_workers: true,
+            advpng: false,
+            gifsicle: false,
+            jhead: false,
+            jpegoptim: false,
+            jpegrecompress: false,
+            jpegtran: false,
+            optipng: false,
+            pngcrush: false,
+            pngquant: false,
+            svgo: false,
+            pngout: false
+          }
         }
         # TODO: deprecated
         config.imageable_models = config.images[:imageable_models]

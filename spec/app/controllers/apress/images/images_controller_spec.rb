@@ -24,7 +24,7 @@ RSpec.describe Apress::Images::ImagesController, type: :controller do
   end
 
   describe '#create' do
-    let(:image) { fixture_file_upload(Rails.root.join('../fixtures/images/sample_image.jpg'), 'image/jpeg', :binary) }
+    let(:image) { fixture_file_upload(Rails.root.join('../fixtures/images/sample_cropable_image.jpg'), 'image/jpeg', :binary) }
 
     context 'when upload images' do
       before { post :upload, model: 'SubjectImage', images: [image, image] }

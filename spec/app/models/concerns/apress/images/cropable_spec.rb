@@ -6,7 +6,7 @@ RSpec.describe Apress::Images::Cropable, type: :model do
   let(:subject_type) { 'DummySubject' }
   let(:image) { build(:subject_image, img: nil) }
   let(:image_file) do
-    fixture_file_upload(Rails.root.join('../fixtures/images/sample_image.jpg'), 'image/jpeg', :binary)
+    fixture_file_upload(Rails.root.join('../fixtures/images/sample_cropable_image.jpg'), 'image/jpeg', :binary)
   end
 
   before do
@@ -17,7 +17,7 @@ RSpec.describe Apress::Images::Cropable, type: :model do
   describe '#compute_processors_with_crop' do
     context 'when some processors already set for an attachment' do
       it do
-        expect(image.img.processors).to eq([:watermark])
+        expect(image.img.processors).to eq([:thumbnail])
       end
 
       context 'when image needs to be croped' do
@@ -26,13 +26,13 @@ RSpec.describe Apress::Images::Cropable, type: :model do
         end
 
         it do
-          expect(image.compute_processors_with_crop(:big)).to eq([:manual_croper, :watermark])
+          expect(image.compute_processors_with_crop(:big)).to eq([:manual_croper, :thumbnail])
         end
       end
 
       context 'when image does not need to be croped' do
         it do
-          expect(image.compute_processors_with_crop(:big)).to eq([:watermark])
+          expect(image.compute_processors_with_crop(:big)).to eq([:thumbnail])
         end
       end
     end

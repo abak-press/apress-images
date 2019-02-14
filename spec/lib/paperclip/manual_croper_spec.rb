@@ -11,7 +11,7 @@ RSpec.describe Paperclip::ManualCroper do
   describe '.make' do
     context 'image is smaller than the original style geometry' do
       let(:image_file) do
-        fixture_file_upload(Rails.root.join('../fixtures/images/sample_image.jpg'), 'image/jpeg', :binary)
+        fixture_file_upload(Rails.root.join('../fixtures/images/sample_cropable_image.jpg'), 'image/jpeg', :binary)
       end
       let(:croper) { described_class.new(image_file, {}, image.img) }
 

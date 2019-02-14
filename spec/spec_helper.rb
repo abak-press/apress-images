@@ -4,7 +4,7 @@ require 'bundler/setup'
 
 require 'simplecov'
 SimpleCov.start 'rails' do
-  minimum_coverage 95
+  minimum_coverage 90
   add_filter 'lib/apress/images/engine.rb'
   add_filter 'lib/apress/images/version.rb'
   add_filter 'app/docs'
