@@ -68,7 +68,11 @@ app.modules.images = (function(self) {
             $('.js-image[data-id="' + id + '"]').attr({src: this[id]});
           }
         });
-        _images.length && setTimeout(_processing, _options.processingTime);
+        if (_images.length) {
+          setTimeout(_processing, _options.processingTime);
+        } else {
+          $doc.trigger('imageProcessingComplete:images', _$imagesContainer);
+        }
       },
       error: function() {
         _process = false;
