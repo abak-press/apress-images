@@ -1,4 +1,10 @@
-.header= I18n.t('views.apress/images.croping_popup.header')
+.header
+  {{#if title}}
+  {{title}}
+  {{else}}
+  = I18n.t('views.apress/images.croping_popup.header')
+  {{/if}}
+
 .image-wrapper.js-image-wrapper
   %img.js-original-image-for-crop{src: '{{image}}'}
   .image-overlay

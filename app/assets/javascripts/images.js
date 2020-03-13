@@ -106,6 +106,7 @@ app.modules.images = (function(self) {
       case fileInfo.width < app.config.images.cropOptions['min_width'] ||
       fileInfo.height < app.config.images.cropOptions['min_height']:
         $doc.trigger('imageTooSmall:images', _$imagesContainer);
+        if (app.config.images.cropOptions['require_save_aspect_ratio']) { return; }
         _uploadFiles([file], app.config.images.uploadData);
         break;
 
@@ -133,7 +134,10 @@ app.modules.images = (function(self) {
       .resize(MAX_CROP_POPUP_WIDTH, MAX_CROP_POPUP_HEIGHT, 'max')
       .get(function(error, image) {
         _cropRatio = image.width / fileInfo.width;
-        _$cropingDialog.html(HandlebarsTemplates['images/croping_popup']({image: image.toDataURL()})).dialog({
+        _$cropingDialog.html(HandlebarsTemplates['images/croping_popup']({
+          image: image.toDataURL(),
+          title: app.config.images.popupTitle
+        })).dialog({
           modal: true,
           resizable: false,
           width: image.width,
@@ -206,6 +210,7 @@ app.modules.images = (function(self) {
   }
 
   function _uploadFiles(files, data) {
+    $doc.trigger('imageStartUploading:images', _$imagesContainer);
     var transformImg;
 
     if (_isImagesLimitExceeds(files)) {
