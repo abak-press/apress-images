@@ -1,6 +1,11 @@
+# v7.0.0
+
+* 2020-03-17 [f8f63fe](../../commit/f8f63fe) - __(TamarinEA)__ Release 7.0.0 
+* 2020-02-28 [403f6f9](../../commit/403f6f9) - __(terentev)__ feat: remove search of biggest style 
+https://jira.railsc.ru/browse/GOODS-2008
+
 # v6.11.0
 
-* 2020-02-11 [7f3d7f9](../../commit/7f3d7f9) - __(terentev)__ Release 6.11.0 
 * 2020-02-07 [d0323ea](../../commit/d0323ea) - __(terentev)__ fix: validate image file only on create 
 https://jira.railsc.ru/browse/GOODS-1799
 
