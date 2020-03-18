@@ -12,6 +12,7 @@
   }
 
   .header { margin: 0 0 15px; font-size: 18px; }
+  .body { justify-content: center; display: flex; min-height: 200px; align-items: center; }
   .actions { text-align: center; margin: 15px 0 0; }
 
   .ui-resizable-handle {
