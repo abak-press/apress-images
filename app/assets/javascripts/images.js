@@ -31,6 +31,7 @@ app.modules.images = (function(self) {
     _images = [],
     _process = false,
     MAX_CROP_POPUP_WIDTH = 640,
+    MIN_CROP_POPUP_WIDTH = 460,
     MAX_CROP_POPUP_HEIGHT = 350,
     _$imagesContainer,
     _$cropingDialog,
@@ -140,7 +141,7 @@ app.modules.images = (function(self) {
         })).dialog({
           modal: true,
           resizable: false,
-          width: image.width,
+          width: image.width < MIN_CROP_POPUP_WIDTH ? MIN_CROP_POPUP_WIDTH : image.width,
           dialogClass: 'croping-popup'
         });
 
