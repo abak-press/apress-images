@@ -1,6 +1,20 @@
+# v7.1.0
+
+* 2020-03-24 [f1cd6a6](../../commit/f1cd6a6) - __(Andrew N. Shalaev)__ fix: lock dry gem 
+* 2020-03-24 [323beb0](../../commit/323beb0) - __(Andrew N. Shalaev)__ Release v7.1.0 
+* 2020-03-18 [332c8d1](../../commit/332c8d1) - __(konstantinbel)__ fix: add min crop popup width/height 
+[PATCH]: Установит минимальную ширину (460px) и высоту (380px) попапа для нарезки изображений.
+https://jira.railsc.ru/browse/BPC-16125
+
+* 2020-03-12 [7076a12](../../commit/7076a12) - __(konstantinbel)__ feature: add custom title to crop popup, add imageStartUploading event 
+[MINOR] Доавлен параметр popup_title, для изменения заголовка попапа кропа (прежний заголовок остался значением по умолчанию). Добавлено событие начала загрузки (после нажатия кнопки "сохранить").
+https://jira.railsc.ru/browse/BPC-16125
+
+* 2020-03-11 [f56919d](../../commit/f56919d) - __(Andrew N. Shalaev)__ feature: add event onCompleteProcessing of images 
+https://jira.railsc.ru/browse/BPC-16304
+
 # v7.0.0
 
-* 2020-03-17 [f8f63fe](../../commit/f8f63fe) - __(TamarinEA)__ Release 7.0.0 
 * 2020-02-28 [403f6f9](../../commit/403f6f9) - __(terentev)__ feat: remove search of biggest style 
 https://jira.railsc.ru/browse/GOODS-2008
 
