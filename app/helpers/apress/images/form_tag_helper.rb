@@ -7,6 +7,7 @@ module Apress
       #
       # name - String, имя поля
       # options - Hash
+      #  popup_title - String, заголовок попапа
       #  subject_type - String, сущность к которой крепим изображение (требуется указать)
       #  model - String, тип (модель) изображения (требуется указать)
       #  subject_id - Integer, id сущности
@@ -27,6 +28,7 @@ module Apress
         }
 
         js_options = {
+          popup_title: options[:popup_title],
           max_size: options.fetch(:max_size, Apress::Images::Image.max_size),
           size_type: options.fetch(:size_type, 'medium'),
           model: options.fetch(:model),
