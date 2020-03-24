@@ -1,5 +1,6 @@
 :javascript
   app.config.images = {
+    popupTitle: #{options.fetch(:popup_title).to_json},
     maxFileSize: #{options.fetch(:max_size).to_json},
     maxFilesCount: #{options.fetch(:images_limit).to_json},
     sizeType: #{options.fetch(:size_type).to_json},
