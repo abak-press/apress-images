@@ -14,3 +14,6 @@
 
 .actions
   %span.apress-button.ab-default.js-save-croped-image= I18n.t('views.apress/images.croping_popup.submit')
+  {{#if showSaveOriginalButton}}
+  %span.apress-button.ab-default.js-save-original-image= I18n.t('views.apress/images.croping_popup.submit_origin')
+  {{/if}}
