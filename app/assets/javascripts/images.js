@@ -137,7 +137,8 @@ app.modules.images = (function(self) {
         _cropRatio = image.width / fileInfo.width;
         _$cropingDialog.html(HandlebarsTemplates['images/croping_popup']({
           image: image.toDataURL(),
-          title: app.config.images.popupTitle
+          title: app.config.images.popupTitle,
+          showSaveOriginalButton: app.config.images.showSaveOriginalButton
         })).dialog({
           modal: true,
           resizable: false,
@@ -350,6 +351,10 @@ app.modules.images = (function(self) {
       })
       .on('click', '.js-save-croped-image', function() {
         _uploadFiles([_processedImage], $.extend({}, app.config.images.uploadData, _cropData));
+        _$cropingDialog.dialog('close');
+      })
+      .on('click', '.js-save-original-image', function() {
+        _uploadFiles([_processedImage], app.config.images.uploadData);
         _$cropingDialog.dialog('close');
       });
   }
