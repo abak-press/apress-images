@@ -145,28 +145,45 @@ app.modules.images = (function(self) {
           dialogClass: 'croping-popup'
         });
 
-        _initCropArea();
+        _initCropArea(image.width, image.height);
       });
 
   }
 
-  function _initCropArea() {
+  function _getInitialSideSize(imageSize, minSize, metric, cropRatio) {
+    var
+      initSize = (app.config.images.cropOptions[metric] || 0) * cropRatio,
+      resultSize;
+
+    if (initSize) {
+      resultSize = initSize < imageSize ? initSize : imageSize;
+    } else {
+      resultSize = minSize;
+    }
+
+    return resultSize;
+  }
+
+  function _initCropArea(imageWidth, imageHeight) {
     var
       $cropArea = _$cropingDialog.find('.js-image-crop-area'),
       $cloneImage = _$cropingDialog.find('.js-clone-image-for-crop'),
-      cropAreaDimensions = {
-        width: app.config.images.cropOptions['min_width'] * _cropRatio,
-        height: app.config.images.cropOptions['min_height'] * _cropRatio
-      };
+      minWidth = app.config.images.cropOptions['min_width'] * _cropRatio,
+      minHeight = app.config.images.cropOptions['min_height'] * _cropRatio,
+      initWidth = _getInitialSideSize(imageWidth, minWidth, 'init_width', _cropRatio),
+      initHeight =  _getInitialSideSize(imageHeight, minHeight, 'init_height', _cropRatio);
 
-    _setCropData({left: 0, top: 0}, {width: cropAreaDimensions.width, height: cropAreaDimensions.height});
+    initWidth = initWidth > initHeight ? initHeight : initWidth;
+    initHeight = initHeight > initWidth ? initWidth : initHeight;
+
+    _setCropData({left: 0, top: 0}, {width: initWidth, height: initHeight});
 
     $cropArea.resizable({
       aspectRatio: true,
       containment: 'parent',
       handles: 'all',
-      minWidth: cropAreaDimensions.width,
-      minHeight: cropAreaDimensions.height,
+      minWidth: minWidth,
+      minHeight: minHeight,
       resize: function(event, ui) {
         $cloneImage.css({
           left: -ui.position.left,
@@ -190,8 +207,8 @@ app.modules.images = (function(self) {
         _setCropData(ui.position, {width: event.target.offsetWidth, height: event.target.offsetHeight});
       }
     }).css({
-      width: cropAreaDimensions.width,
-      height: cropAreaDimensions.height,
+      width: initWidth,
+      height: initHeight,
       top: 0,
       left: 0
     }).find('img').css({
