@@ -31,3 +31,4 @@ if RUBY_VERSION < '2.5'
 end
 # NameError: uninitialized constant Pry::Command::ExitAll при попытке выполнить require 'pry-byebug'
 gem 'pry', '< 0.13.0', require: false
+gem 'rspec-rails', '< 4.0.0', require: false
