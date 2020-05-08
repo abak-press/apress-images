@@ -24,6 +24,7 @@ end
 if RUBY_VERSION < '2.4'
   gem 'dry-configurable', '< 0.9.0', require: false if RUBY_VERSION >= '2.3'
   gem 'mock_redis', '< 0.20', require: false
+  gem 'redis-namespace', ' < 1.7.0', require: false
 end
 
 if RUBY_VERSION < '2.5'

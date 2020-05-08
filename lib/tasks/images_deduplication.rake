@@ -188,6 +188,62 @@ namespace :images_deduplication do
     logger.info('FINISH')
   end
 
+  desc 'Поправит у дублей флаг processing, если оригинал уже обработан'
+  task switch_processing_flag_for_duplicates: :environment do
+    logger = Logger.new(STDOUT).tap { |l| l.formatter = Logger::Formatter.new }
+    model = ENV.fetch('MODEL').constantize
+    batch_size = ENV.fetch('BATCH_SIZE', 1_000)
+
+    cursor_options =
+      {
+        with_hold: true,
+        connection: ActiveRecord::Base.on(:direct).connection,
+        block_size: batch_size
+      }
+
+    query = <<-SQL.strip_heredoc
+      SELECT
+        t1.id, t1.fingerprint_parent_id
+      FROM
+        #{model.quoted_table_name} t1
+      WHERE
+        t1.fingerprint_parent_id IS NOT NULL AND
+        t1.processing = true AND
+        EXISTS (
+          SELECT 1
+          FROM
+            #{model.quoted_table_name} t2
+          WHERE
+            t2.processing = false AND t2.id = t1.fingerprint_parent_id
+        )
+    SQL
+
+    processed = 0
+
+    logger.info('Start')
+
+    model.each_row_by_sql(query, cursor_options) do |row|
+      id = row['id']
+      parent_id = row['fingerprint_parent_id']
+
+      original = model.find(parent_id)
+      attrs = {
+        processing: false,
+        img_fingerprint: original.img_fingerprint,
+        img_file_size: original.img_file_size,
+        img_file_name: original.img_file_name
+      }
+
+      model.where(id: id).update_all(attrs)
+
+      processed += 1
+      logger.info("#{processed} duplicates fixed") if (processed % batch_size) == 0
+    end
+
+    logger.info("#{processed} duplicates fixed")
+    logger.info('Finish')
+  end
+
   def with_retry(count = 3)
     yield
   rescue
