@@ -174,9 +174,6 @@ app.modules.images = (function(self) {
       initWidth = _getInitialSideSize(imageWidth, minWidth, 'init_width', _cropRatio),
       initHeight =  _getInitialSideSize(imageHeight, minHeight, 'init_height', _cropRatio);
 
-    initWidth = initWidth > initHeight ? initHeight : initWidth;
-    initHeight = initHeight > initWidth ? initWidth : initHeight;
-
     _setCropData({left: 0, top: 0}, {width: initWidth, height: initHeight});
 
     $cropArea.resizable({
