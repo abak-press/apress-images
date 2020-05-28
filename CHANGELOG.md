@@ -1,7 +1,15 @@
+# v7.1.1
+
+* 2020-05-28 [2f8b1d1](../../commit/2f8b1d1) - __(Mikhail Nelaev)__ Release 7.1.1 
+* 2020-05-07 [cc696d1](../../commit/cc696d1) - __(Mikhail Nelaev)__ fix: attempt to fix processing flag for duplicates 
+https://jira.railsc.ru/browse/GOODS-2367
+
+* 2020-04-30 [d0086b7](../../commit/d0086b7) - __(Mikhail Nelaev)__ fix: не будем показывать на проде ошибку imagemagick 
+https://jira.railsc.ru/browse/GOODS-2265
+
 # v7.1.0
 
 * 2020-03-24 [f1cd6a6](../../commit/f1cd6a6) - __(Andrew N. Shalaev)__ fix: lock dry gem 
-* 2020-03-24 [323beb0](../../commit/323beb0) - __(Andrew N. Shalaev)__ Release v7.1.0 
 * 2020-03-18 [332c8d1](../../commit/332c8d1) - __(konstantinbel)__ fix: add min crop popup width/height 
 [PATCH]: Установит минимальную ширину (460px) и высоту (380px) попапа для нарезки изображений.
 https://jira.railsc.ru/browse/BPC-16125
