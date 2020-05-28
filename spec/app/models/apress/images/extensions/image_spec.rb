@@ -192,6 +192,28 @@ RSpec.describe Apress::Images::Extensions::Image do
           end
         end
       end
+
+      context 'when not an image' do
+        let(:image) { build :subject_image, img: text_file }
+        let(:text_file) { fixture_file_upload(Rails.root.join('../fixtures/images/txt_file.txt'), 'text/plain') }
+
+        context 'when log level debug' do
+          it do
+            expect(image.valid?).to eq false
+            expect(image.errors[:img_content_type]).to include match(/\AФайл повреждёнidentify.im6/)
+          end
+        end
+
+        context 'when log level info' do
+          before { Rails.application.config.log_level = :info }
+          after { Rails.application.config.log_level = :debug }
+
+          it do
+            expect(image.valid?).to eq false
+            expect(image.errors[:img_content_type]).to include match(/\AФайл повреждён\z/)
+          end
+        end
+      end
     end
   end
 end

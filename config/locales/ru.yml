@@ -2,6 +2,9 @@ ru:
   activerecord:
     errors:
       failed_to_download_remote_file: Не удалось загрузить файл по ссылке
+      img_content_type:
+        corrupted: 'Файл повреждён%{debug_message}'
+
   views:
     apress/images:
       croping_popup:

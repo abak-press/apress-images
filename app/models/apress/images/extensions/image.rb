@@ -57,7 +57,13 @@ module Apress
 
             adapter = Paperclip.io_adapters.for(img)
             stdout_stderr_output = `identify -verbose #{adapter.path} 2>&1`
-            errors.add(:img_content_type, "Corrupted image: #{stdout_stderr_output}") if $CHILD_STATUS != 0
+
+            if $CHILD_STATUS != 0
+              errors.
+                add(:img_content_type,
+                    I18n.t('activerecord.errors.img_content_type.corrupted',
+                           debug_message: Rails.application.config.log_level == :debug ? stdout_stderr_output : ''))
+            end
           end
         end
 

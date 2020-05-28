@@ -24,6 +24,7 @@ end
 if RUBY_VERSION < '2.4'
   gem 'dry-configurable', '< 0.9.0', require: false if RUBY_VERSION >= '2.3'
   gem 'mock_redis', '< 0.20', require: false
+  gem 'redis-namespace', ' < 1.7.0', require: false
 end
 
 if RUBY_VERSION < '2.5'
@@ -31,3 +32,4 @@ if RUBY_VERSION < '2.5'
 end
 # NameError: uninitialized constant Pry::Command::ExitAll при попытке выполнить require 'pry-byebug'
 gem 'pry', '< 0.13.0', require: false
+gem 'rspec-rails', '< 4.0.0', require: false
