@@ -172,10 +172,11 @@ app.modules.images = (function(self) {
       minWidth = app.config.images.cropOptions['min_width'] * _cropRatio,
       minHeight = app.config.images.cropOptions['min_height'] * _cropRatio,
       initWidth = _getInitialSideSize(imageWidth, minWidth, 'init_width', _cropRatio),
-      initHeight =  _getInitialSideSize(imageHeight, minHeight, 'init_height', _cropRatio);
+      initHeight =  _getInitialSideSize(imageHeight, minHeight, 'init_height', _cropRatio),
+      aspectRatio = minWidth / minHeight;
 
-    initWidth = initWidth > initHeight ? initHeight : initWidth;
-    initHeight = initHeight > initWidth ? initWidth : initHeight;
+    initWidth = initWidth > (initHeight * aspectRatio) ? (initHeight * aspectRatio) : initWidth;
+    initHeight = initHeight > (initWidth / aspectRatio) ? (initWidth / aspectRatio) : initHeight;
 
     _setCropData({left: 0, top: 0}, {width: initWidth, height: initHeight});
 
