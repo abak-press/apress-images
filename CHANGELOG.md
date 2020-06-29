@@ -1,6 +1,19 @@
+# v7.2.0
+
+* 2020-06-29 [21770e9](../../commit/21770e9) - __(konstantinbel)__ Release 7.2.0 
+* 2020-05-29 [8c217da](../../commit/8c217da) - __(konstantinbel)__ fix: save aspect ratio 
+https://jira.railsc.ru/browse/BPC-16802
+
+* 2020-04-17 [f14540f](../../commit/f14540f) - __(konstantinbel)__ feature: add "save original" button 
+[MINOR] Добавит кнопку "Сохранить без изменений" в попап кропа.
+https://jira.railsc.ru/browse/BPC-16487
+
+* 2020-04-17 [c259268](../../commit/c259268) - __(konstantinbel)__ feature: add initial crop size 
+[MINOR] Добавит возможность передать параметры init_width и init_height, для выставления начального размера области кропа.
+https://jira.railsc.ru/browse/BPC-16487
+
 # v7.1.1
 
-* 2020-05-28 [2f8b1d1](../../commit/2f8b1d1) - __(Mikhail Nelaev)__ Release 7.1.1 
 * 2020-05-07 [cc696d1](../../commit/cc696d1) - __(Mikhail Nelaev)__ fix: attempt to fix processing flag for duplicates 
 https://jira.railsc.ru/browse/GOODS-2367
 
