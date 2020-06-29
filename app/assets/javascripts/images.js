@@ -137,7 +137,8 @@ app.modules.images = (function(self) {
         _cropRatio = image.width / fileInfo.width;
         _$cropingDialog.html(HandlebarsTemplates['images/croping_popup']({
           image: image.toDataURL(),
-          title: app.config.images.popupTitle
+          title: app.config.images.popupTitle,
+          showSaveOriginalButton: app.config.images.showSaveOriginalButton
         })).dialog({
           modal: true,
           resizable: false,
@@ -145,28 +146,46 @@ app.modules.images = (function(self) {
           dialogClass: 'croping-popup'
         });
 
-        _initCropArea();
+        _initCropArea(image.width, image.height);
       });
 
   }
 
-  function _initCropArea() {
+  function _getInitialSideSize(imageSize, minSize, metric, cropRatio) {
+    var
+      initSize = (app.config.images.cropOptions[metric] || 0) * cropRatio,
+      resultSize;
+
+    if (initSize) {
+      resultSize = initSize < imageSize ? initSize : imageSize;
+    } else {
+      resultSize = minSize;
+    }
+
+    return resultSize;
+  }
+
+  function _initCropArea(imageWidth, imageHeight) {
     var
       $cropArea = _$cropingDialog.find('.js-image-crop-area'),
       $cloneImage = _$cropingDialog.find('.js-clone-image-for-crop'),
-      cropAreaDimensions = {
-        width: app.config.images.cropOptions['min_width'] * _cropRatio,
-        height: app.config.images.cropOptions['min_height'] * _cropRatio
-      };
+      minWidth = app.config.images.cropOptions['min_width'] * _cropRatio,
+      minHeight = app.config.images.cropOptions['min_height'] * _cropRatio,
+      initWidth = _getInitialSideSize(imageWidth, minWidth, 'init_width', _cropRatio),
+      initHeight =  _getInitialSideSize(imageHeight, minHeight, 'init_height', _cropRatio),
+      aspectRatio = minWidth / minHeight;
 
-    _setCropData({left: 0, top: 0}, {width: cropAreaDimensions.width, height: cropAreaDimensions.height});
+    initWidth = initWidth > (initHeight * aspectRatio) ? (initHeight * aspectRatio) : initWidth;
+    initHeight = initHeight > (initWidth / aspectRatio) ? (initWidth / aspectRatio) : initHeight;
+
+    _setCropData({left: 0, top: 0}, {width: initWidth, height: initHeight});
 
     $cropArea.resizable({
       aspectRatio: true,
       containment: 'parent',
       handles: 'all',
-      minWidth: cropAreaDimensions.width,
-      minHeight: cropAreaDimensions.height,
+      minWidth: minWidth,
+      minHeight: minHeight,
       resize: function(event, ui) {
         $cloneImage.css({
           left: -ui.position.left,
@@ -190,8 +209,8 @@ app.modules.images = (function(self) {
         _setCropData(ui.position, {width: event.target.offsetWidth, height: event.target.offsetHeight});
       }
     }).css({
-      width: cropAreaDimensions.width,
-      height: cropAreaDimensions.height,
+      width: initWidth,
+      height: initHeight,
       top: 0,
       left: 0
     }).find('img').css({
@@ -333,6 +352,10 @@ app.modules.images = (function(self) {
       })
       .on('click', '.js-save-croped-image', function() {
         _uploadFiles([_processedImage], $.extend({}, app.config.images.uploadData, _cropData));
+        _$cropingDialog.dialog('close');
+      })
+      .on('click', '.js-save-original-image', function() {
+        _uploadFiles([_processedImage], app.config.images.uploadData);
         _$cropingDialog.dialog('close');
       });
   }

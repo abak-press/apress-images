@@ -29,6 +29,7 @@ module Apress
 
         js_options = {
           popup_title: options[:popup_title],
+          show_save_original_button: options[:show_save_original_button],
           max_size: options.fetch(:max_size, Apress::Images::Image.max_size),
           size_type: options.fetch(:size_type, 'medium'),
           model: options.fetch(:model),
