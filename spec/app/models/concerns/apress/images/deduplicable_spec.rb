@@ -184,14 +184,7 @@ describe Apress::Images::Deduplicable do
         end
 
         it do
-          expect(image3.reload.processing).to be_falsey
-
-          expect(image3.fingerprint).to eq image1.fingerprint
-          expect(image3.img_fingerprint).to eq image1.img_fingerprint
-          expect(image3.img_file_name).to eq image1.img_file_name
-          expect(image3.img_content_type).to eq image1.img_content_type
-          expect(image3.img_file_size).to eq image1.img_file_size
-          expect(image3.fingerprint_parent_id).to eq image1.id
+          expect(Resque.delayed?(Apress::Images::UpdateDuplicateImageJob, image3.id, image3.class.to_s)).to be_truthy
         end
       end
 
