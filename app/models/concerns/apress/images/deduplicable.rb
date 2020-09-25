@@ -65,6 +65,20 @@ module Apress
             where(fingerprint_parent_id: nil).where(img_fingerprint: file_fingerprint).first
         end
       end
+
+      module Callbacks
+        extend ActiveSupport::Concern
+
+        DUPLICATE_STATUS_JOB_DELAY = 10.minutes
+
+        included do
+          after_commit :enqueue_duplicate_updating, if: -> { duplicate? && processing? }
+        end
+
+        def enqueue_duplicate_updating
+          Resque.enqueue_in(DUPLICATE_STATUS_JOB_DELAY, Apress::Images::UpdateDuplicateImageJob, id, self.class.name)
+        end
+      end
     end
   end
 end
