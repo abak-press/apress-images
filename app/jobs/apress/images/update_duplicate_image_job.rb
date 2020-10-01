@@ -5,7 +5,7 @@ module Apress
 
       queue :images
 
-      def self.execute(id, class_name)
+      def self.perform(id, class_name)
         model = class_name.camelize.constantize
         image = model.where(id: id).first!
 

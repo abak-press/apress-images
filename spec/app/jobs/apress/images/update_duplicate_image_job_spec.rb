@@ -13,11 +13,11 @@ RSpec.describe Apress::Images::UpdateDuplicateImageJob do
     image
   end
 
-  describe '.execute' do
+  describe '.perform' do
     it do
       expect(image2.reload.processing).to be_truthy
 
-      described_class.execute(image2.id, image2.class.to_s)
+      described_class.perform(image2.id, image2.class.to_s)
 
       expect(image2.reload.processing).to be_falsey
       expect(image2.fingerprint).to eq image1.fingerprint
