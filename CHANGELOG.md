@@ -1,6 +1,14 @@
+# v7.3.0
+
+* 2020-10-08 [e6c3918](../../commit/e6c3918) - __(Mikhail Nelaev)__ Release 7.3.0 
+* 2020-10-01 [0ec64c5](../../commit/0ec64c5) - __(Mikhail Nelaev)__ fix: define perform method for delayed job 
+https://jira.railsc.ru/browse/GOODS-2524
+
+* 2020-09-24 [b52d23d](../../commit/b52d23d) - __(Mikhail Nelaev)__ feature: обновление дублей в отложенном джобе 
+https://jira.railsc.ru/browse/GOODS-2524
+
 # v7.2.0
 
-* 2020-06-29 [21770e9](../../commit/21770e9) - __(konstantinbel)__ Release 7.2.0 
 * 2020-05-29 [8c217da](../../commit/8c217da) - __(konstantinbel)__ fix: save aspect ratio 
 https://jira.railsc.ru/browse/BPC-16802
 
