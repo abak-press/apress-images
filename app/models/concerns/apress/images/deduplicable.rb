@@ -72,11 +72,16 @@ module Apress
         DUPLICATE_STATUS_JOB_DELAY = 10.minutes
 
         included do
-          after_commit :enqueue_duplicate_updating, if: -> { duplicate? && processing? }
+          after_commit :enqueue_duplicate_updating, on: :create, if: -> { duplicate? && processing? }
+          after_commit :dequeue_duplicate_updating, on: :destroy, if: :duplicate?
         end
 
         def enqueue_duplicate_updating
           Resque.enqueue_in(DUPLICATE_STATUS_JOB_DELAY, Apress::Images::UpdateDuplicateImageJob, id, self.class.name)
+        end
+
+        def dequeue_duplicate_updating
+          Resque.remove_delayed(Apress::Images::UpdateDuplicateImageJob, id, self.class.to_s)
         end
       end
     end
