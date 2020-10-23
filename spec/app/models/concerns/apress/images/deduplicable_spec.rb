@@ -188,6 +188,24 @@ describe Apress::Images::Deduplicable do
         end
       end
 
+      context 'when destroying duplicate' do
+        let(:image3) do
+          image = build :default_duplicated_image
+          image1.img.process_delayed!
+
+          image.save!
+          image
+        end
+
+        it do
+          expect(Resque.delayed?(Apress::Images::UpdateDuplicateImageJob, image3.id, image3.class.to_s)).to be_truthy
+
+          image3.destroy
+
+          expect(Resque.delayed?(Apress::Images::UpdateDuplicateImageJob, image3.id, image3.class.to_s)).to be_falsey
+        end
+      end
+
       describe '#duplicate_from' do
         shared_examples_for 'duplicate_when_image1_original' do |image|
           let(:image3) do
