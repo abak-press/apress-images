@@ -1,6 +1,11 @@
+# v7.3.1
+
+* 2020-11-10 [667951e](../../commit/667951e) - __(Mikhail Nelaev)__ Release 7.3.1 
+* 2020-10-23 [fdca393](../../commit/fdca393) - __(Mikhail Nelaev)__ fix: ActiveRecord::RecordNotFound in UpdateDuplicateImageJob 
+https://jira.railsc.ru/browse/GOODS-2576
+
 # v7.3.0
 
-* 2020-10-08 [e6c3918](../../commit/e6c3918) - __(Mikhail Nelaev)__ Release 7.3.0 
 * 2020-10-01 [0ec64c5](../../commit/0ec64c5) - __(Mikhail Nelaev)__ fix: define perform method for delayed job 
 https://jira.railsc.ru/browse/GOODS-2524
 
