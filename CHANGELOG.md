@@ -1,6 +1,10 @@
+# v7.3.2
+
+* 2020-11-16 [0593e5d](../../commit/0593e5d) - __(Andrew N. Shalaev)__ Release v7.3.2 
+* 2020-11-16 [cae5244](../../commit/cae5244) - __(Andrew N. Shalaev)__ fix: check on enqueue_dangling_image method exists 
+
 # v7.3.1
 
-* 2020-11-10 [667951e](../../commit/667951e) - __(Mikhail Nelaev)__ Release 7.3.1 
 * 2020-10-23 [fdca393](../../commit/fdca393) - __(Mikhail Nelaev)__ fix: ActiveRecord::RecordNotFound in UpdateDuplicateImageJob 
 https://jira.railsc.ru/browse/GOODS-2576
 
