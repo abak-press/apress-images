@@ -56,7 +56,7 @@ module Apress
           first_duplicate.destroy
         end
 
-        enqueue_dangling_image if subject_id.nil?
+        enqueue_dangling_image if subject_id.nil? && defined?(enqueue_dangling_image)
       end
 
       module ClassMethods
