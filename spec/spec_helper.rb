@@ -29,12 +29,11 @@ require 'test_after_commit'
 require 'apress/api/testing/json_matcher'
 require 'timecop'
 
-require 'mock_redis'
 require 'pry-byebug'
 
 Paperclip.options[:logger] = Rails.logger
 
-Redis.current = MockRedis.new
+Redis.current = Redis.new(host: ENV['TEST_REDIS_HOST'])
 Resque.redis = Redis.current
 
 RSpec.configure do |config|
