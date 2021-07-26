@@ -1,6 +1,10 @@
+# v7.3.3
+
+* 2021-07-26 [0c6f139](../../commit/0c6f139) - __(TamarinEA)__ Release 7.3.3 
+* 2021-07-26 [9bec9ca](../../commit/9bec9ca) - __(TamarinEA)__ chore: add ruby 2.4 support 
+
 # v7.3.2
 
-* 2020-11-16 [0593e5d](../../commit/0593e5d) - __(Andrew N. Shalaev)__ Release v7.3.2 
 * 2020-11-16 [cae5244](../../commit/cae5244) - __(Andrew N. Shalaev)__ fix: check on enqueue_dangling_image method exists 
 
 # v7.3.1
