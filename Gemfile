@@ -19,6 +19,7 @@ if RUBY_VERSION < '2.3'
   gem 'public_suffix', '< 3.1.0', require: false
   gem 'redis', '< 4.1.2', require: false
   gem 'oj', '< 3.8.0', require: false
+  gem 'pundit', '< 2.1.1', require: false
 end
 
 if RUBY_VERSION < '2.4'
