@@ -1,5 +1,5 @@
 module Apress
   module Images
-    VERSION = '7.3.3'.freeze
+    VERSION = '7.4.0'.freeze
   end
 end
