@@ -1,6 +1,11 @@
+# v7.4.0
+
+* 2021-08-18 [ad16d6d](../../commit/ad16d6d) - __(Andrew N. Shalaev)__ Release v7.4.0 
+* 2021-07-26 [f46211b](../../commit/f46211b) - __(KonstantinBel)__ fix: fix image size in croping popup 
+https://jira.railsc.ru/browse/BPC-19097
+
 # v7.3.3
 
-* 2021-07-26 [0c6f139](../../commit/0c6f139) - __(TamarinEA)__ Release 7.3.3 
 * 2021-07-26 [9bec9ca](../../commit/9bec9ca) - __(TamarinEA)__ chore: add ruby 2.4 support 
 
 # v7.3.2
