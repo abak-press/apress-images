@@ -19,6 +19,7 @@ if RUBY_VERSION < '2.3'
   gem 'public_suffix', '< 3.1.0', require: false
   gem 'redis', '< 4.1.2', require: false
   gem 'oj', '< 3.8.0', require: false
+  gem 'pundit', '< 2.1.1', require: false
 end
 
 if RUBY_VERSION < '2.4'
@@ -33,4 +34,3 @@ if RUBY_VERSION < '2.5'
 end
 # NameError: uninitialized constant Pry::Command::ExitAll при попытке выполнить require 'pry-byebug'
 gem 'pry', '< 0.13.0', require: false
-gem 'rspec-rails', '< 4.0.0', require: false
