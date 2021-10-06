@@ -1,6 +1,18 @@
+# v7.5.0
+
+* 2021-10-05 [1c3ed8c](../../commit/1c3ed8c) - __(Gelani Geliskhanov)__ fix: lock appraisal version 
+* 2021-10-05 [eb783a2](../../commit/eb783a2) - __(Gelani Geliskhanov)__ Release v7.5.0 
+* 2021-09-16 [c9cf6c0](../../commit/c9cf6c0) - __(Gelani Geliskhanov)__ chore: corrected mapping in docker-compose.yml 
+* 2021-09-16 [3901716](../../commit/3901716) - __(Gelani Geliskhanov)__ fix: corrected uploading for animated images 
+https://jira.railsc.ru/browse/PC4-27093
+
+* 2021-09-16 [9a721b3](../../commit/9a721b3) - __(Gelani Geliskhanov)__ chore: locked rspec-rails and pundit versions 
+* 2021-06-17 [677991d](../../commit/677991d) - __(terentev)__ lock rails-assets-jquery 
+* 2021-06-17 [87e54f6](../../commit/87e54f6) - __(terentev)__ fix: previews for images without background processing 
+https://jira.railsc.ru/browse/PC4-26810
+
 # v7.4.0
 
-* 2021-08-18 [ad16d6d](../../commit/ad16d6d) - __(Andrew N. Shalaev)__ Release v7.4.0 
 * 2021-07-26 [f46211b](../../commit/f46211b) - __(KonstantinBel)__ fix: fix image size in croping popup 
 https://jira.railsc.ru/browse/BPC-19097
 
