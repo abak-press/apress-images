@@ -1,12 +1,9 @@
-name: build
-
+---
 kind: pipeline
 type: docker
+name: build
 
 volumes:
-  - name: images
-    host:
-      path: /home/data/drone/images
   - name: bundle
     host:
       path: /home/data/drone/gems
@@ -15,66 +12,75 @@ volumes:
       path: /home/data/drone/key_cache
 
 spec_step_common: &spec_step_common
-  image: abakpress/dind-testing:1.0.3
   pull: if-not-exists
-  privileged: true
   volumes:
-    - name: images
-      path: /images
-    - name: bundle
-      path: /bundle
-    - name: keys
-      path: /ssh_keys
+  - name: bundle
+    path: /bundle
+  - name: keys
+    path: /ssh_keys
   commands:
-    - prepare-build
-
-    - fetch-images
-      --image whilp/ssh-agent
-      --image abakpress/ruby-app:$RUBY_IMAGE_TAG
-      --image abakpress/postgres-db:$POSTGRES_IMAGE_TAG
-      --image redis:$REDIS_IMAGE_TAG
-
-    - dip ssh add -T -v /ssh_keys -k /ssh_keys/id_rsa
-    - dip provision
-    - dip rspec
+    - eval $(ssh-agent -s)
+    - ssh-add /ssh_keys/id_rsa
+    - rm -fr Gemfile.lock gemfiles/
+    - bundle install -j 5
+    - bundle exec appraisal install
+    - bundle exec appraisal rspec
 
 steps:
-  - name: Tests Ruby 2.2
-    environment:
-      COMPOSE_FILE_EXT: drone
-      DOCKER_RUBY_VERSION: 2.2
-      RUBY_IMAGE_TAG: 2.2-latest
-      POSTGRES_IMAGE_TAG: 9.6-latest
-      REDIS_IMAGE_TAG: 4-alpine
-      RAILS_ENV: test
-    <<: *spec_step_common
+- name: postgres
+  image: abakpress/postgres-db:9.6-latest
+  pull: if-not-exists
+  environment:
+    POSTGRES_DB: docker
+  detach: true
 
-  - name: Tests Ruby 2.3
-    environment:
-      COMPOSE_FILE_EXT: drone
-      DOCKER_RUBY_VERSION: 2.3
-      RUBY_IMAGE_TAG: 2.3-latest
-      POSTGRES_IMAGE_TAG: 9.6-latest
-      REDIS_IMAGE_TAG: 4-alpine
-      RAILS_ENV: test
-    <<: *spec_step_common
+- name: redis
+  image: redis:4-alpine
+  pull: if-not-exists
+  detach: true
 
-  - name: Tests Ruby 2.4
-    environment:
-      COMPOSE_FILE_EXT: drone
-      DOCKER_RUBY_VERSION: 2.4
-      RUBY_IMAGE_TAG: 2.4-latest
-      POSTGRES_IMAGE_TAG: 9.6-latest
-      REDIS_IMAGE_TAG: 4-alpine
-      RAILS_ENV: test
-    <<: *spec_step_common
+- name: build on ruby2.2
+  image: abakpress/ruby-app:2.2-1.1.4
+  environment:
+    TEST_DB_HOST: postgres
+    TEST_DB_NAME: docker
+    TEST_DB_USERNAME: postgres
+    TEST_REDIS_HOST: redis
+    BUNDLE_CONFIG: /app/.bundle/config
+    BUNDLE_PATH: /bundle/2.2
+    REDIS_IMAGE_TAG: 4-alpine
+  <<: *spec_step_common
 
-  - name: release
-    image: abakpress/gem-publication:latest
-    pull: if-not-exists
-    when:
-      event: push
-      branch: master
-      status: success
-    commands:
-      - release-gem
+- name: build on ruby2.3
+  image: abakpress/ruby-app:2.3-1.1.5
+  environment:
+    TEST_DB_HOST: postgres
+    TEST_DB_NAME: docker
+    TEST_DB_USERNAME: postgres
+    TEST_REDIS_HOST: redis
+    BUNDLE_CONFIG: /app/.bundle/config
+    BUNDLE_PATH: /bundle/2.3
+    REDIS_IMAGE_TAG: 4-alpine
+  <<: *spec_step_common
+
+- name: build on ruby2.4
+  image: abakpress/ruby-app:2.4-latest
+  environment:
+    TEST_DB_HOST: postgres
+    TEST_DB_NAME: docker
+    TEST_DB_USERNAME: postgres
+    BUNDLE_CONFIG: /app/.bundle/config
+    BUNDLE_PATH: /bundle/2.4
+    TEST_REDIS_HOST: redis
+    REDIS_IMAGE_TAG: 4-alpine
+  <<: *spec_step_common
+
+- name: release
+  image: abakpress/gem-publication:latest
+  pull: if-not-exists
+  when:
+    event: push
+    branch: master
+    status: success
+  commands:
+    - release-gem

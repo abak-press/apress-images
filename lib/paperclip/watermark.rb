@@ -2,13 +2,14 @@
 module Paperclip
   class Watermark < Thumbnail
     # Handles watermarking of images that are uploaded.
-    attr_accessor :watermark_path, :overlay, :position
+    attr_accessor :types_without_watermark, :watermark_path, :overlay, :position
 
     def initialize(file, options = {}, attachment = nil)
       super
-      @watermark_path = options[:watermark_path]
-      @position       = options[:position] || "SouthEast"
-      @overlay        = options[:overlay].nil?
+      @types_without_watermark = options.fetch(:types_without_watermark, [])
+      @watermark_path          = options[:watermark_path]
+      @position                = options[:position] || "SouthEast"
+      @overlay                 = options[:overlay].nil?
     end
 
     # TODO: extend watermark
@@ -34,7 +35,11 @@ module Paperclip
         Paperclip.run(program, parameters,
           :source => "#{File.expand_path(src.path)}#{'[0]' unless animated?}",
           :dest => File.expand_path(dst.path),
-          :watermark => watermark_path
+          :watermark => if file.is_a?(Paperclip::Tempfile)
+                          watermark_path
+                        else
+                          types_without_watermark.exclude?(file.content_type) ? watermark_path : nil
+                        end
         )
       rescue Cocaine::ExitStatusError
         raise Paperclip::Error, "There was an error processing the watermark for #{@basename}" if @whiny
@@ -46,7 +51,15 @@ module Paperclip
     end
 
     def program
+      file.is_a?(Paperclip::Tempfile) ? program_without_types : program_with_types
+    end
+
+    def program_without_types
       watermark_path.present? ? 'composite' : 'convert'
+    end
+
+    def program_with_types
+      watermark_path.present? && types_without_watermark.exclude?(file.content_type) ? 'composite' : 'convert'
     end
 
     def watermark_options

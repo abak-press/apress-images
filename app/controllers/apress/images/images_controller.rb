@@ -13,7 +13,8 @@ module Apress
       #   [{4190=>"/system/imgs/4190/medium/png_image.png"}, {4191=>"processing"}]
       def previews
         previews = model.where(id: params.require(:ids)).map do |img|
-          {img.id => img.processing? ? 'processing' : img.img.url(params.fetch(:style, :medium))}
+          in_process = img.respond_to?(:processing?) && img.processing?
+          {img.id => in_process ? 'processing' : img.img.url(params.fetch(:style, :medium))}
         end
 
         render json: previews
