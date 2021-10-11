@@ -20,15 +20,14 @@ if RUBY_VERSION < '2.3'
   gem 'redis', '< 4.1.2', require: false
   gem 'oj', '< 3.8.0', require: false
   gem 'pundit', '< 2.1.1', require: false
-  gem 'appraisal', git: 'git@github.com:abak-press/appraisal', branch: 'v2.2.0', ref: '0f973ff'
 end
 
 if RUBY_VERSION < '2.4'
   gem 'redis-namespace', ' < 1.7.0', require: false
   gem 'rails-assets-jquery', '3.3.2', require: false
+
   if RUBY_VERSION >= '2.3'
     gem 'dry-configurable', '< 0.9.0', require: false
-    gem 'appraisal', git: 'git@github.com:abak-press/appraisal', branch: 'master', ref: 'e53afd5'
   end
 end
 
