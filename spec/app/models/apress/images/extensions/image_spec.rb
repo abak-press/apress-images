@@ -200,7 +200,7 @@ RSpec.describe Apress::Images::Extensions::Image do
         context 'when log level debug' do
           it do
             expect(image.valid?).to eq false
-            expect(image.errors[:img_content_type]).to include match(/\AФайл повреждёнidentify/)
+            expect(image.errors[:img_content_type]).to include match(/\AФайл повреждён identify/)
           end
         end
 
