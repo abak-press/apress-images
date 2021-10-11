@@ -1,7 +1,12 @@
+# v7.5.1
+
+* 2021-10-10 [a34e753](../../commit/a34e753) - __(TamarinEA)__ Release 7.5.1 
+* 2021-10-10 [0a790bb](../../commit/0a790bb) - __(TamarinEA)__ chore: do not lock appraisal 
+* 2021-10-10 [d946853](../../commit/d946853) - __(TamarinEA)__ fix: add space to identify error message 
+
 # v7.5.0
 
 * 2021-10-05 [1c3ed8c](../../commit/1c3ed8c) - __(Gelani Geliskhanov)__ fix: lock appraisal version 
-* 2021-10-05 [eb783a2](../../commit/eb783a2) - __(Gelani Geliskhanov)__ Release v7.5.0 
 * 2021-09-16 [c9cf6c0](../../commit/c9cf6c0) - __(Gelani Geliskhanov)__ chore: corrected mapping in docker-compose.yml 
 * 2021-09-16 [3901716](../../commit/3901716) - __(Gelani Geliskhanov)__ fix: corrected uploading for animated images 
 https://jira.railsc.ru/browse/PC4-27093
