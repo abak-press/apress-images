@@ -53,6 +53,7 @@ module Apress
           background_processing =
             options.fetch(:background_processing, true) && column_names.include?(COLUMN_PROCESSING_NAME)
 
+          include Apress::Images::OnlineProcessable
           include(Apress::Images::Extensions::BackgroundProcessing) if background_processing
 
           if options[:cropable_styles].present? && options[:crop_options]
