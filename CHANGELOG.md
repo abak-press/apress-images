@@ -1,6 +1,11 @@
+# v7.5.2
+
+* 2022-01-13 [a1e45f2](../../commit/a1e45f2) - __(Andrew N. Shalaev)__ Release v7.5.2 
+* 2022-01-13 [ea7c541](../../commit/ea7c541) - __(Andrew N. Shalaev)__ fix: extract online_processing attr to model 
+https://jira.railsc.ru/browse/BPC-19985
+
 # v7.5.1
 
-* 2021-10-10 [a34e753](../../commit/a34e753) - __(TamarinEA)__ Release 7.5.1 
 * 2021-10-10 [0a790bb](../../commit/0a790bb) - __(TamarinEA)__ chore: do not lock appraisal 
 * 2021-10-10 [d946853](../../commit/d946853) - __(TamarinEA)__ fix: add space to identify error message 
 
