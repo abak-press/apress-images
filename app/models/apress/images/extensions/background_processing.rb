@@ -40,17 +40,6 @@ module Apress
           nil
         end
 
-        # Public: Определяет какая обработка изображения будет: онлайн(по умолчанию) или не онлайн
-        attr_writer :online_processing
-
-        def online_processing?
-          if defined?(@online_processing)
-            @online_processing
-          else
-            true
-          end
-        end
-
         protected
 
         # Internal: перед сохраненнием, запоминаем что картинка была изменена
