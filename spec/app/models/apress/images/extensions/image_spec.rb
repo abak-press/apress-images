@@ -214,6 +214,18 @@ RSpec.describe Apress::Images::Extensions::Image do
           end
         end
       end
+
+      context 'image formats' do
+        %w(jpg webp).each do |img_format|
+          let(:filepath) { Rails.root.join("../fixtures/images/sample_image.#{img_format}") }
+          let(:attachment) { fixture_file_upload(filepath, "image/#{img_format}") }
+          let(:image) { build :subject_image, img: attachment }
+
+          context "when #{img_format}" do
+            it { expect(image.valid?).to eq true }
+          end
+        end
+      end
     end
   end
 end
