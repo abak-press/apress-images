@@ -10,9 +10,9 @@ module Apress
       # Public: максимальный размер вложения, Мб
       MAX_SIZE = 15
       # Public: допустимые форматы
-      ALLOWED_MIME_TYPES = /\Aimage\/(jpeg|png|gif|pjpeg)\Z/.freeze
+      ALLOWED_MIME_TYPES = /\Aimage\/(jpeg|png|gif|pjpeg|webp)\Z/.freeze
       # Public: шаблоны допустимых названий файлов
-      ALLOWED_FILE_NAMES = [/gif\Z/i, /png\Z/i, /jpe?g\Z/i].freeze
+      ALLOWED_FILE_NAMES = [/gif\Z/i, /png\Z/i, /jpe?g\Z/i, /webp\Z/i].freeze
       # Public: путь к маленькому водяному знаку по-умолчанию
       WATERMARK_SMALL = File.join(Rails.public_path, 'images', 'pcwm-small.png').freeze
       # Public: путь к большому водяному знаку по-умолчанию

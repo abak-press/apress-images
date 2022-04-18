@@ -10,7 +10,7 @@ RSpec.describe Apress::Images::Imageable do
 
   it { expect(image).to have_attached_file(:img) }
   it { expect(image).to validate_attachment_presence(:img) }
-  it { expect(image).to validate_attachment_content_type(:img).allowing('image/png', 'image/gif') }
+  it { expect(image).to validate_attachment_content_type(:img).allowing('image/png', 'image/gif', 'image/webp') }
   it { expect(image).to validate_attachment_content_type(:img).rejecting('text/plain', 'text/xml') }
   it { expect(image).to validate_attachment_size(:img).less_than(image.class.max_size.megabytes) }
 
