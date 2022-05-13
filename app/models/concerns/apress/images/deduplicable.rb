@@ -57,6 +57,11 @@ module Apress
         end
 
         enqueue_dangling_image if subject_id.nil? && defined?(enqueue_dangling_image)
+
+        # В рельсе 4.2 удаление ассоциации осуществляется через destroy!
+        # и он ломается если destroy возвращает nil
+        # https://github.com/rails/rails/blob/v4.2.11.3/activerecord/lib/active_record/persistence.rb#L185
+        true
       end
 
       module ClassMethods
