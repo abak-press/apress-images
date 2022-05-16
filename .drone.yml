@@ -28,7 +28,7 @@ spec_step_common: &spec_step_common
 
 steps:
 - name: postgres
-  image: abakpress/postgres-db:9.6-latest
+  image: abakpress/postgres-db:11
   pull: if-not-exists
   environment:
     POSTGRES_DB: docker
@@ -39,32 +39,8 @@ steps:
   pull: if-not-exists
   detach: true
 
-- name: build on ruby2.2
-  image: abakpress/ruby-app:2.2-1.1.4
-  environment:
-    TEST_DB_HOST: postgres
-    TEST_DB_NAME: docker
-    TEST_DB_USERNAME: postgres
-    TEST_REDIS_HOST: redis
-    BUNDLE_CONFIG: /app/.bundle/config
-    BUNDLE_PATH: /bundle/2.2
-    REDIS_IMAGE_TAG: 4-alpine
-  <<: *spec_step_common
-
-- name: build on ruby2.3
-  image: abakpress/ruby-app:2.3-1.1.5
-  environment:
-    TEST_DB_HOST: postgres
-    TEST_DB_NAME: docker
-    TEST_DB_USERNAME: postgres
-    TEST_REDIS_HOST: redis
-    BUNDLE_CONFIG: /app/.bundle/config
-    BUNDLE_PATH: /bundle/2.3
-    REDIS_IMAGE_TAG: 4-alpine
-  <<: *spec_step_common
-
 - name: build on ruby2.4
-  image: abakpress/ruby-app:2.4-latest
+  image: abakpress/ruby-app:2.4-2.0.0
   environment:
     TEST_DB_HOST: postgres
     TEST_DB_NAME: docker
