@@ -1,6 +1,11 @@
+# v7.6.0
+
+* 2022-05-16 [b0384c8](../../commit/b0384c8) - __(Andrew N. Shalaev)__ Release v7.6.0 
+* 2022-04-14 [3a8ffd3](../../commit/3a8ffd3) - __(Mikhail Nelaev)__ feature: поддержка webp 
+https://jira.railsc.ru/browse/GOODS-3124
+
 # v7.5.2
 
-* 2022-01-13 [a1e45f2](../../commit/a1e45f2) - __(Andrew N. Shalaev)__ Release v7.5.2 
 * 2022-01-13 [ea7c541](../../commit/ea7c541) - __(Andrew N. Shalaev)__ fix: extract online_processing attr to model 
 https://jira.railsc.ru/browse/BPC-19985
 
