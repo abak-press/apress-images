@@ -5,7 +5,7 @@ environment:
   RUBY_IMAGE_TAG: 2.4-2.0.0
   BUNDLE_CONFIG: /app/.bundle/config
   BUNDLE_GEMFILE: Gemfile
-  POSTGRES_IMAGE_TAG: 9.6-latest
+  POSTGRES_IMAGE_TAG: 11
   REDIS_IMAGE_TAG: 4-alpine
   COMPOSE_FILE_EXT: development
   RAILS_ENV: test
