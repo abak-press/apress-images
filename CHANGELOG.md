@@ -1,6 +1,15 @@
+# v7.7.0
+
+* 2022-06-28 [65390db](../../commit/65390db) - __(Gelani Geliskhanov)__ Release v7.7.0 
+return true when images destroy
+
+you do not need to do anything to connect to the project
+
+* 2022-05-13 [d3cd00f](../../commit/d3cd00f) - __(GIGrave)__ feature: return true when images destroy 
+https://jira.railsc.ru/browse/BPC-20526
+
 # v7.6.0
 
-* 2022-05-16 [b0384c8](../../commit/b0384c8) - __(Andrew N. Shalaev)__ Release v7.6.0 
 * 2022-04-14 [3a8ffd3](../../commit/3a8ffd3) - __(Mikhail Nelaev)__ feature: поддержка webp 
 https://jira.railsc.ru/browse/GOODS-3124
 
