@@ -33,6 +33,7 @@ require 'pry-byebug'
 
 Paperclip.options[:logger] = Rails.logger
 
+Redis.silence_deprecations = true
 Redis.current = Redis.new(host: ENV['TEST_REDIS_HOST'])
 Resque.redis = Redis.current
 
