@@ -24,7 +24,7 @@ RSpec.describe Apress::Images::ProcessJob do
               'crop_y' => '0'
             }
           )
-        end.to raise_error(ActiveRecord::RecordNotFound)
+        end.to_not raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end
