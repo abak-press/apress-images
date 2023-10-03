@@ -7,6 +7,7 @@ gem 'actionpack', '< 5.0.0', require: false
 gemspec
 
 gem "haml", ">= 4.0.7"
+gem 'apress-api', source: 'https://gems.railsc.ru'
 
 gem 'pg', '< 1.0.0'
 
