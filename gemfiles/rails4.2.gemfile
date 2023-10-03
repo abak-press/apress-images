@@ -5,6 +5,7 @@ source "https://rubygems.org"
 
 gem "actionpack", "< 5.0.0", require: false
 gem "haml", ">= 4.0.7"
+gem "apress-api", source: "https://gems.railsc.ru"
 gem "pg", "< 1.0.0"
 gem "sprockets", "< 4.0.0"
 gem "nokogiri", "< 1.11.0", require: false
