@@ -1,6 +1,19 @@
+# v7.8.2
+
+* 2024-02-06 [5e972f8](../../commit/5e972f8) - __(Andrew N. Shalaev)__ Release v7.8.2 
+* 2024-02-06 [f7f55b4](../../commit/f7f55b4) - __(Andrew N. Shalaev)__ fix: do not rm lock files in drone 
+* 2023-10-03 [7aeea67](../../commit/7aeea67) - __(Andrew N. Shalaev)__ Release v7.8.1 
+* 2023-10-03 [4a2c43d](../../commit/4a2c43d) - __(Andrew N. Shalaev)__ fix: refresh dependencies 
+* 2023-08-04 [945f162](../../commit/945f162) - __(git1-railsc)__ Release 7.8.0 
+* 2023-07-18 [21f8e3f](../../commit/21f8e3f) - __(GIGrave)__ fix: no raise error if record not found 
+https://jira.railsc.ru/browse/BPC-22320
+
+* 2023-07-18 [59914ef](../../commit/59914ef) - __(GIGrave)__ feature: do not ignore lock files 
+* 2023-07-18 [3db552d](../../commit/3db552d) - __(GIGrave)__ fix: shut up redis 
+* 2023-07-18 [6f881c3](../../commit/6f881c3) - __(GIGrave)__ fix: lock loofah gem 
+
 # v7.7.0
 
-* 2022-06-28 [65390db](../../commit/65390db) - __(Gelani Geliskhanov)__ Release v7.7.0 
 return true when images destroy
 
 you do not need to do anything to connect to the project
