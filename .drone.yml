@@ -21,7 +21,6 @@ spec_step_common: &spec_step_common
   commands:
     - eval $(ssh-agent -s)
     - ssh-add /ssh_keys/id_rsa
-    - rm -fr Gemfile.lock gemfiles/
     - bundle install -j 5
     - bundle exec appraisal install
     - bundle exec appraisal rspec
