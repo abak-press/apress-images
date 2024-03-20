@@ -229,6 +229,29 @@ app.modules.images = (function(self) {
     };
   }
 
+  function _checkFileSizeAndExtension(file) {
+    var invalidType = !/^image/.test(file.type);
+    var invalidSize = !(file.size <= _options.maxFileSize * FileAPI.MB); 
+
+    if (invalidType && invalidSize) {
+      $doc.trigger('imageTypeInvalid:images', _$imagesContainer);
+      return true;
+    }
+
+    invalidType && $doc.trigger('imageTypeInvalid:images', _$imagesContainer);
+    invalidSize && $doc.trigger('imageTooBig:images', _$imagesContainer);
+
+    return invalidType || invalidSize;
+  }
+
+  function _checkFilesBeforeUpload(files) {
+    for (var i = 0; i < files.length; i++) {
+      if(_checkFileSizeAndExtension(files[i])) {
+        return true;
+      }
+    }
+  }
+
   function _uploadFiles(files, data) {
     $doc.trigger('imageStartUploading:images', _$imagesContainer);
     var transformImg;
@@ -238,6 +261,11 @@ app.modules.images = (function(self) {
       files = files.slice(0, _options.maxFilesCount - (files.length + _getImagesCount()));
     }
     if (!files.length) {
+      return false;
+    }
+
+    var isThereConfig = app.config.imagesUploader && app.config.imagesUploader.checkBeforeUpload;
+    if (isThereConfig && _checkFilesBeforeUpload(files)) {
       return false;
     }
 
