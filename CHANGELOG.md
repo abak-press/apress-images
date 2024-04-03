@@ -1,6 +1,11 @@
+# v7.8.3
+
+* 2024-04-03 [e171b32](../../commit/e171b32) - __(ArtemBorodinEvgenyevich)__ Release: v7.8.3 
+* 2024-03-13 [5a9cd0e](../../commit/5a9cd0e) - __(Vasilkov Ivan)__ fix: добавит проверку размера и расширения перед загрузкой картинки 
+https://jira.railsc.ru/browse/PC4-30113
+
 # v7.8.2
 
-* 2024-02-06 [5e972f8](../../commit/5e972f8) - __(Andrew N. Shalaev)__ Release v7.8.2 
 * 2024-02-06 [f7f55b4](../../commit/f7f55b4) - __(Andrew N. Shalaev)__ fix: do not rm lock files in drone 
 * 2023-10-03 [7aeea67](../../commit/7aeea67) - __(Andrew N. Shalaev)__ Release v7.8.1 
 * 2023-10-03 [4a2c43d](../../commit/4a2c43d) - __(Andrew N. Shalaev)__ fix: refresh dependencies 
