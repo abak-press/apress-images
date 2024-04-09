@@ -21,14 +21,16 @@ module Apress
       end
 
       module ClassMethods
-        # Public: Нормализация позиций в контексте subject_id - subject_type
+        # Public: Нормализация позиций в контексте subject_id - subject_type - type
         #
         # subject_id - Integer
         # subject_type - String
+        # type - String
         #
         # Returns nothing
-        def normalize_positions(subject_id, subject_type)
+        def normalize_positions(subject_id, subject_type, type = nil)
           return unless subject_id.present? && subject_type.present?
+          type_condition = type.nil? ? 'type IS NULL' : "type = #{connection.quote(type)}"
 
           table = quoted_table_name
           connection.execute <<-SQL.strip_heredoc
@@ -37,12 +39,13 @@ module Apress
             (
               SELECT
                 id,
-                row_number() OVER (PARTITION BY subject_id, subject_type
+                row_number() OVER (PARTITION BY subject_id, subject_type, type
                                    ORDER BY "position" NULLS LAST, created_at, id) AS real_position
               FROM
                 #{table}
-              WHERE
-                subject_id = #{connection.quote(subject_id)} AND subject_type = #{connection.quote(subject_type)}
+              WHERE subject_id = #{connection.quote(subject_id)}
+                AND subject_type = #{connection.quote(subject_type)}
+                AND #{type_condition}
             ) t
             WHERE i.id = t.id AND
                   COALESCE(i.position, -1) != t.real_position;
@@ -62,7 +65,7 @@ module Apress
       protected
 
       def normalize_positions
-        self.class.normalize_positions(subject_id, subject_type)
+        self.class.normalize_positions(subject_id, subject_type, type)
       end
     end
   end
