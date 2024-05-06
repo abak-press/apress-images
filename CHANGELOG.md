@@ -1,3 +1,9 @@
+# v7.8.4
+
+* 2024-05-03 [8af2d52](../../commit/8af2d52) - __(git2-railsc)__ Release 7.8.4 
+* 2024-05-03 [59bea6e](../../commit/59bea6e) - __(gevhoo)__ fix: id_partition when ID more then billion 
+https://jira.railsc.ru/browse/GOODS-4093
+
 # v7.8.3
 
 * 2024-04-03 [e171b32](../../commit/e171b32) - __(ArtemBorodinEvgenyevich)__ Release: v7.8.3 
