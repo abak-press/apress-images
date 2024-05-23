@@ -38,7 +38,8 @@ module Apress
             MIME::Types['image/jpeg'] +
             MIME::Types['image/gif'] +
             MIME::Types['image/png']
-          ).to_set
+          ).to_set,
+          not_resized_types: [%r{^image/svg}],
         }
         # TODO: deprecated
         config.imageable_models = config.images[:imageable_models]

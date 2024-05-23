@@ -21,7 +21,7 @@ module Apress
       #
       # Returns boolean.
       def need_croping?
-        crop_w.present? && crop_h.present? && crop_x.present? && crop_y.present?
+        resizable? && crop_w.present? && crop_h.present? && crop_x.present? && crop_y.present?
       end
 
       # Public: Если изображение нуждается в кадрировании, то к уже настроеным процессорам
@@ -60,7 +60,10 @@ module Apress
 
       module ClassMethods
         def attachment_options_with_crop
-          attachment_options_without_crop
+          opts = attachment_options_without_crop
+          return opts unless opts.fetch(:styles).is_a?(Hash)
+
+          opts
             .fetch(:styles)
             .each do |style, style_options|
               if cropable_styles.include?(style) && !style_options.is_a?(Hash)
@@ -68,7 +71,7 @@ module Apress
               end
             end
 
-          attachment_options_without_crop.deep_merge(
+          opts.deep_merge(
             styles: cropable_styles_options,
             need_extract_source_image_geometry: true
           )
