@@ -8,6 +8,8 @@ module Apress
       attr_reader :attachment, :attachment_options
 
       def for(style_name, options)
+        style_name = :original unless attachment.instance.resizable?
+
         interpolated_url = attachment_options[:interpolator].interpolate(most_appropriate_url, attachment, style_name)
         escaped_url = escape_url_as_needed(interpolated_url, options)
 

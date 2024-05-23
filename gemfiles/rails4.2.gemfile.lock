@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    apress-images (7.8.1)
+    apress-images (7.8.4)
       addressable (>= 2.3.2)
       apress-api (>= 1.8.0)
       class_logger (~> 1.0.1)
@@ -89,14 +89,14 @@ GEM
     diff-lcs (1.5.0)
     docile (1.3.5)
     erubis (2.7.0)
-    et-orbi (1.2.7)
+    et-orbi (1.2.11)
       tzinfo
     factory_girl (4.9.0)
       activesupport (>= 3.0.0)
     factory_girl_rails (4.9.0)
       factory_girl (~> 4.9.0)
       railties (>= 3.0.0)
-    fugit (1.9.0)
+    fugit (1.10.1)
       et-orbi (~> 1, >= 1.2.7)
       raabro (~> 1.4)
     globalid (0.4.2)
@@ -112,7 +112,7 @@ GEM
       concurrent-ruby (~> 1.0)
     jbuilder (2.9.1)
       activesupport (>= 4.2.0)
-    json (2.7.1)
+    json (2.7.2)
     json-schema (2.8.1)
       addressable (>= 2.4)
     loofah (2.19.1)
