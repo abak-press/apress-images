@@ -1,6 +1,16 @@
+# v7.8.5
+
+* 2024-06-17 [c30a8db](../../commit/c30a8db) - __(git2-railsc)__ Release 7.8.5 
+* 2024-05-23 [2176fc1](../../commit/2176fc1) - __(Andrew N. Shalaev)__ fix: check on resizable? before use it 
+* 2024-05-23 [5886214](../../commit/5886214) - __(Andrew N. Shalaev)__ fix: refresh lock files 
+* 2024-05-23 [191ee91](../../commit/191ee91) - __(Andrew N. Shalaev)__ fix: detect not resizable images 
+https://jira.railsc.ru/browse/BPC-23502
+
+* 2024-05-23 [1361f30](../../commit/1361f30) - __(Andrew N. Shalaev)__ fix: do not try to crop svg images 
+https://jira.railsc.ru/browse/BPC-23502
+
 # v7.8.4
 
-* 2024-05-03 [8af2d52](../../commit/8af2d52) - __(git2-railsc)__ Release 7.8.4 
 * 2024-05-03 [59bea6e](../../commit/59bea6e) - __(gevhoo)__ fix: id_partition when ID more then billion 
 https://jira.railsc.ru/browse/GOODS-4093
 
