@@ -37,7 +37,8 @@ app.modules.images = (function(self) {
     _$cropingDialog,
     _cropRatio,
     _cropData,
-    _processedImage;
+    _processedImage,
+    _forbiddenForCropMimeTypes = /^image\/svg/;
 
   _images.add = function(params) {
     this.push(params);
@@ -314,28 +315,33 @@ app.modules.images = (function(self) {
         $doc.trigger('imageTypeInvalid:images', _$imagesContainer);
       }
     }, function(files) {
-      var file;
+      if (files.length === 0) {
+        return;
+      }
 
-      if (files.length) {
-        if (app.config.images.cropable) {
-          file = files[0];
+      var file = files[0];
 
-          // На текущий момент кроп предусмотрен только в случае одиночной загрузки картинок
-          if (app.config.images.originalStyle.width && app.config.images.originalStyle.height) {
-            FileAPI.Image(file)
-              //уменьшаем картинку до размеров оригинального стиля, относительно которого backend обрезает изображение
-              .resize(app.config.images.originalStyle.width, app.config.images.originalStyle.height, 'max')
-              .get(function(error, image) {
-                _checkIfImageShouldBeCroped(file, {width: image.width, height: image.height});
-              });
-          } else {
-            _checkIfImageShouldBeCroped(file, _getImageSize(file));
-          }
-        } else {
-          _uploadFiles(files, app.config.images.uploadData);
-        }
+      // На текущий момент кроп предусмотрен только в случае одиночной загрузки картинок
+      if (!_allowCrop(file)) {
+        _uploadFiles(files, app.config.images.uploadData);
+        return;
+      }
+
+      if (app.config.images.originalStyle.width && app.config.images.originalStyle.height) {
+        FileAPI.Image(file)
+          //уменьшаем картинку до размеров оригинального стиля, относительно которого backend обрезает изображение
+          .resize(app.config.images.originalStyle.width, app.config.images.originalStyle.height, 'max')
+          .get(function(error, image) {
+            _checkIfImageShouldBeCroped(file, {width: image.width, height: image.height});
+          });
+      } else {
+        _checkIfImageShouldBeCroped(file, _getImageSize(file));
       }
     });
+  }
+
+  function _allowCrop(file) {
+    return app.config.images.cropable && !_forbiddenForCropMimeTypes.test(file.type);
   }
 
   function _getImagesCount() {

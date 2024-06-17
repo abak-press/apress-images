@@ -22,6 +22,7 @@ module Apress
         # Returns
         def processing?
           return unless instance.respond_to?(:processing?)
+
           instance.processing?
         end
 
@@ -84,6 +85,7 @@ module Apress
         # Returns String
         def processing_image_url
           return unless delayed_options
+
           img_stub_path = delayed_options[:processing_image_url]
           img_stub_path = img_stub_path.call(self) if img_stub_path.respond_to?(:call)
           img_stub_path
@@ -135,6 +137,7 @@ module Apress
         # Returns nothing
         def update_processing_column
           return unless instance.processing?
+
           instance.processing = false
           instance.class.where(instance.class.primary_key => instance.id).update_all(processing: false)
         end

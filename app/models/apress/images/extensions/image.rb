@@ -40,7 +40,8 @@ module Apress
                                          matches: allowed_file_names,
                                          message: 'Файл должен быть корректным изображением'
 
-          validate :corrupted_image_file_validation, if: -> { (img.dirty? || img_was_changed?) && !duplicate? }
+          validate :corrupted_image_file_validation,
+                   if: -> { img.present? && resizable? && (img.dirty? || img_was_changed?) && !duplicate? }
 
           send "before_#{attachment_attribute}_post_process", :extract_source_image_geometry
 
@@ -53,8 +54,6 @@ module Apress
           after_rollback :clear_attachment, on: :create
 
           def corrupted_image_file_validation
-            return if img.blank?
-
             adapter = Paperclip.io_adapters.for(img)
             stdout_stderr_output = `identify -verbose #{adapter.path} 2>&1`
 
@@ -101,6 +100,20 @@ module Apress
           image_url.present?
         end
 
+        # Можно ли применить ресайз
+        #
+        # @return [Boolean]
+        def resizable?
+          return @resizable if defined?(@resizable)
+
+          attachment_attr = self.class.attachment_definitions.keys.first
+          content_type = send(:"#{attachment_attr}_content_type").to_s
+
+          @resizable = ::Rails.application.config.images.fetch(:not_resized_types).all? do |t|
+            t !~ content_type
+          end
+        end
+
         private
 
         def img_was_changed?
@@ -112,7 +125,7 @@ module Apress
         #
         # Returns nothing.
         def extract_source_image_geometry
-          return unless self.class.attachment_options.fetch(:need_extract_source_image_geometry)
+          return if !resizable? || !self.class.attachment_options.fetch(:need_extract_source_image_geometry)
 
           tempfile = img.queued_for_write[:original]
           self.source_image_geometry = Paperclip::Geometry.from_file(tempfile)
