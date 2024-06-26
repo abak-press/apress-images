@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 module Apress
   module Images
@@ -80,6 +80,7 @@ module Apress
           if options[:deduplication]
             prepend Apress::Images::Deduplicable
             extend Apress::Images::Deduplicable::ClassMethods
+            include Apress::Images::Deduplicable::Callbacks
 
             define_method(:deduplication_moved_attributes) do
               options.fetch(:deduplication_moved_attributes, %w(subject_id))
