@@ -108,6 +108,13 @@ module Apress
         def default_attachment_options
           DEFAULT_OPTIONS
         end
+
+        # Public: Отключение запроса по колонке type по-умолчанию
+        #
+        # Returns Boolean
+        def finder_needs_type_condition?
+          false
+        end
       end
     end
   end
