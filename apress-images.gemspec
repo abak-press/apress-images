@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = %w(lib)
 
-  spec.add_runtime_dependency 'rails', '>= 3.1.12', '< 5'
+  spec.add_runtime_dependency 'rails', '>= 4.2.0', '< 5'
   spec.add_runtime_dependency 'pg'
   spec.add_runtime_dependency 'paperclip', '~> 4.2'
   spec.add_runtime_dependency 'russian', '>= 0.6'
@@ -30,20 +30,19 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'apress-api', '>= 1.8.0'
   spec.add_runtime_dependency 'open_uri_redirections'
 
-  spec.add_development_dependency 'bundler', '~> 1.7'
+  spec.add_development_dependency 'bundler', '~> 1.17.3'
   spec.add_development_dependency 'rake'
   spec.add_development_dependency 'json-schema'
-  spec.add_development_dependency 'rspec', '>= 3.1'
-  spec.add_development_dependency 'rspec-rails', '>= 2.14.0'
+  spec.add_development_dependency 'rspec-rails', '~> 3.9.1'
   spec.add_development_dependency 'appraisal', '>= 1.0.2'
-  spec.add_development_dependency 'combustion', '>= 0.5.3'
+  spec.add_development_dependency 'combustion', '>= 0.5.4'
   spec.add_development_dependency 'shoulda-matchers', '< 3'
   spec.add_development_dependency 'rspec-html-matchers', '>= 0.7'
   spec.add_development_dependency 'simplecov', '>= 0.9'
   spec.add_development_dependency 'test_after_commit', '>= 0.2.3', '< 0.5'
   spec.add_development_dependency 'mock_redis', '>= 0.15.3'
   spec.add_development_dependency 'webmock', '>= 1.24.2'
-  spec.add_development_dependency 'factory_girl_rails'
+  spec.add_development_dependency 'factory_girl_rails', ">= 4.5"
   spec.add_development_dependency 'timecop'
   spec.add_development_dependency 'test-unit'
   spec.add_development_dependency 'pry-byebug'

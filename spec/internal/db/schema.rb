@@ -8,6 +8,7 @@ ActiveRecord::Schema.define do
     t.integer :img_file_size
     t.integer :position, null: false, default: 0
     t.boolean :processing, null: false, default: false
+    t.string :type
     t.timestamps
   end
 
@@ -38,5 +39,6 @@ ActiveRecord::Schema.define do
     t.boolean :processing, null: false, default: false
     t.timestamp :created_at
     t.timestamp :img_updated_at
+    t.string :type
   end
 end

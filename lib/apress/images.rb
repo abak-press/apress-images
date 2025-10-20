@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'rails'
 require('strong_parameters') if Rails::VERSION::MAJOR < 4
@@ -20,4 +20,3 @@ end
 require 'apress/images/engine'
 require 'apress/images/version'
 require 'apress/images/filename_cleaner'
-
