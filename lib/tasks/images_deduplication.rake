@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :images_deduplication do
   desc 'Удаление дублей картинок'
   task remove_duplicates: :environment do

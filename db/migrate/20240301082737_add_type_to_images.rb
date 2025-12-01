@@ -2,6 +2,9 @@
 
 class AddTypeToImages < ActiveRecord::Migration
   def up
+    # Проверяем, есть ли уже колонка :type
+    return if column_exists?(:images, :type)
+
     add_column :images, :type, :string, comment: 'Название класса модели изображения'
 
     execute 'END;'
@@ -14,6 +17,9 @@ class AddTypeToImages < ActiveRecord::Migration
   end
 
   def down
+    # Проверяем, есть ли уже колонка :type
+    return unless column_exists?(:images, :type)
+
     execute 'END;'
     execute <<-SQL.strip_heredoc
       CREATE UNIQUE INDEX CONCURRENTLY idx_images_on_subject_position

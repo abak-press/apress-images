@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 FactoryGirl.define do
   factory :image, class: Apress::Images::Image do
@@ -28,6 +28,14 @@ FactoryGirl.define do
   end
 
   factory :disordered_image, class: DisorderedImage do
+    img { Rack::Test::UploadedFile.new(Rails.root.join('../fixtures/images/sample_image.jpg'), 'image/jpeg') }
+  end
+
+  factory :default_duplicated_image, class: DefaultDuplicatedImage do
+    img { Rack::Test::UploadedFile.new(Rails.root.join('../fixtures/images/sample_image.jpg'), 'image/jpeg') }
+  end
+
+  factory :simple_duplicated_image, class: SimpleDuplicatedImage do
     img { Rack::Test::UploadedFile.new(Rails.root.join('../fixtures/images/sample_image.jpg'), 'image/jpeg') }
   end
 end

@@ -12,6 +12,7 @@ class CreateApressImages < ActiveRecord::Migration
         t.timestamps
         t.string :title
         t.text :comment
+        t.string :type
       end
     end
 

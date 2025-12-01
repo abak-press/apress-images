@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Apress
   module Images
     VERSION = '6.6.0'.freeze

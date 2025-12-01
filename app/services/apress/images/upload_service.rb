@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 module Apress
   module Images
@@ -117,7 +117,7 @@ module Apress
         subject_type = params[:subject_type].camelize
         raise ArgumentError, 'Subject is not allowed' if allowed_subjects.exclude? subject_type
 
-        attributes[:subject_type] = subject_type.constantize.model_name
+        attributes[:subject_type] = subject_type.constantize.model_name.to_s
         attributes[:subject_id] = params[:subject_id].to_i if params[:subject_id].present?
         attributes
       end

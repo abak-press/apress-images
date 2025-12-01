@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'bundler/setup'
 
@@ -43,6 +43,11 @@ RSpec.configure do |config|
   config.filter_run_including focus: true
   config.run_all_when_everything_filtered = true
 
-  Redis.current = MockRedis.new
-  Resque.redis = Redis.current
+  redis = MockRedis.new
+  Redis.current = redis
+  Resque.redis = redis
+
+  config.before(:each) do
+    redis.flushdb
+  end
 end

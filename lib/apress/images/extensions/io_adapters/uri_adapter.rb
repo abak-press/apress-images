@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'open_uri_redirections'
 
 module Apress
