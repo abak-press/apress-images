@@ -3,6 +3,7 @@
 require 'rails'
 require('strong_parameters') if Rails::VERSION::MAJOR < 4
 require 'addressable/uri'
+require 'slaver'
 require 'resque/integration'
 require 'russian'
 require 'paperclip'
