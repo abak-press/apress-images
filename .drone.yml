@@ -33,11 +33,12 @@ steps:
     POSTGRES_DB: docker
   detach: true
 
-- name: postgres_vector
+- name: db_hashes
   image: pgvector/pgvector:pg17
   pull: if-not-exists
   environment:
     POSTGRES_DB: docker
+    POSTGRES_HOST_AUTH_METHOD: trust
   detach: true
 
 - name: redis

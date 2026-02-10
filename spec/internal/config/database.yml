@@ -8,4 +8,3 @@ test_image_hashes_storage:
   <<: *DEFAULTS
   host: db_hashes
   port: 5432
-  password: postgres
