@@ -1,6 +1,11 @@
-test:
+test: &DEFAULTS
   adapter: postgresql
   database: <%= ENV.fetch("TEST_DB_NAME", "ci") %>
   username: <%= ENV.fetch("TEST_DB_USERNAME", "docker") %>
   host: <%= ENV.fetch("TEST_DB_HOST", "localhost") %>
   min_messages: warning
+test_image_hashes_storage:
+  <<: *DEFAULTS
+  host: db_hashes
+  port: 5432
+  password: postgres
