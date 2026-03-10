@@ -70,11 +70,11 @@ RSpec.describe Apress::Images::ChildHashingJob do
     end
   end
 
-  context 'when error occurred' do
+  context 'when error occurred outside of pHashion' do
     before do
       Redis.current.set('images:hash_calc:subject_image:job_id:0', 'init')
 
-      allow_any_instance_of(::Apress::Images::CalculateHashService).to receive(:call).and_raise 'Boom!'
+      allow_any_instance_of(::Apress::Images::ChildHashingService).to receive(:calculate_hashes).and_raise 'Boom!'
     end
 
     it do
@@ -89,6 +89,44 @@ RSpec.describe Apress::Images::ChildHashingJob do
 
       expect(Redis.current.get 'images:hash_calc:subject_image:job_id:0').to eq 'failed'
       expect(storage_con.select_one('select count(*) from subject_image_hashes').values.first.to_i).to eq 0
+    end
+  end
+
+  context 'when corrupted image' do
+    let(:corrupted_img_file) do
+      fixture_file_upload(Rails.root.join('../fixtures/images/corrupted_image.jpg'), 'image/jpg', :binary)
+    end
+    let(:corrupted_image) { build :subject_image, img: corrupted_img_file }
+
+    let(:failed_ids) do
+      CSV.read(
+        Rails.root.join('log', 'images_hashing_failed_ids_0.csv'),
+        col_sep: ';'
+      ).to_a.flatten.map(&:to_i)
+    end
+
+    before do
+      corrupted_image.save(validate: false)
+      images << corrupted_image
+      Redis.current.set('images:hash_calc:subject_image:job_id:0', 'init')
+    end
+
+    it do
+      expect(logger).to receive(:info).with('SubjectImage Job id 0 working')
+      expect(logger).to receive(:info).with('SubjectImage Job id 0 finished')
+      expect(logger).to receive(:info).with('SubjectImage Job id 0 Exiting child hashing job')
+
+      expect(::Apress::Images::MasterHashingJob).to receive :enqueue
+
+      subject
+
+      expect(Redis.current.get 'images:hash_calc:subject_image:job_id:0').to eq 'finished'
+      expect(storage_con.select_one('select count(*) from subject_image_hashes').values.first.to_i).to eq 3
+      expect(storage_con.select_values('select subject_image_id from subject_image_hashes').map(&:to_i)).
+        to match_array(images.map(&:id) - [corrupted_image.id])
+      expect(storage_con.select_values('select mh_hash_vector_binary from subject_image_hashes').map(&:size)).
+        to eq [576, 576, 576]
+      expect(failed_ids).to eq [corrupted_image.id]
     end
   end
 end

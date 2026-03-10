@@ -1,3 +1,11 @@
+GIT
+  remote: git@gitlab.railsc.ru:abak-press/phashion.git
+  revision: 1e52b2b04ac2560d9836ecc9598029c8e1b29191
+  ref: 1e52b2b
+  branch: master
+  specs:
+    phashion (1.2.0)
+
 PATH
   remote: .
   specs:
@@ -149,7 +157,6 @@ GEM
       mime-types
       mimemagic (= 0.3.0)
     pg (0.21.0)
-    phashion (1.2.0)
     power_assert (2.0.3)
     pry (0.12.2)
       coderay (~> 1.1.0)
@@ -320,6 +327,7 @@ DEPENDENCIES
   loofah (< 2.20.0)
   nokogiri (< 1.11.0)
   pg (< 1.0.0)
+  phashion!
   pry (< 0.13.0)
   pry-byebug
   rake
