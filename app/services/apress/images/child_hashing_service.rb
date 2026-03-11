@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'csv'
+
 module Apress
   module Images
     class ChildHashingService
@@ -14,6 +16,8 @@ module Apress
         @children_count = options[:children_count]
         @hashes_table = options[:hashes_table]
         @external_id = options[:hashes_table_external_id]
+
+        @failed_ids = []
 
         @current_batch = 0
       end
@@ -34,6 +38,8 @@ module Apress
 
         raise
       ensure
+        log_failed_ids
+
         info('Exiting child hashing job')
 
         # Если дочерний джоб закончил работу или упал,
@@ -58,7 +64,21 @@ module Apress
           data = []
 
           @model.where('id >= ? AND id <= ?', min_id, next_id).each do |image|
-            data << [image.id, ::Apress::Images::CalculateHashService.call(image)]
+            begin
+              mh_hash = ::Apress::Images::CalculateHashService.call(image)
+            rescue StandardError => e
+              info("error: image id #{image.id} - #{e.message}")
+              @failed_ids << image.id
+
+              next
+            end
+
+            data << [image.id, mh_hash]
+          end
+
+          if data.empty?
+            info("Empty batch #{min_id}..#{next_id}")
+            next
           end
 
           image_hash_storage_connection.execute <<~SQL
@@ -91,6 +111,17 @@ module Apress
         return 100 if @batches_count.zero?
 
         (@current_batch * 100.0 / @batches_count).ceil
+      end
+
+      def log_failed_ids
+        return if @failed_ids.empty?
+
+        info('Logging failed ids')
+
+        csv_path = Rails.root.join('log', "images_hashing_failed_ids_#{@job_num}.csv")
+        ::CSV.open(csv_path, 'w', col_sep: ';') do |row|
+          row << @failed_ids
+        end
       end
 
       def initialized?
