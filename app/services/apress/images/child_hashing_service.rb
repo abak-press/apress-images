@@ -78,6 +78,7 @@ module Apress
 
           if data.empty?
             info("Empty batch #{min_id}..#{next_id}")
+            min_id = next_id + 1
             next
           end
 
