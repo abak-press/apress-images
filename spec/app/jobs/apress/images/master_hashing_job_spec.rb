@@ -13,12 +13,16 @@ RSpec.describe Apress::Images::MasterHashingJob do
     allow_any_instance_of(::Apress::Images::MasterHashingService).to receive(:logger).and_return(logger)
   end
 
-  subject do
-    described_class.execute(
-      'SubjectImage',
+  let(:default_options) do
+    {
       hashes_table: 'subject_image_hashes',
       hashes_table_external_id: 'subject_image_id'
-    )
+    }
+  end
+  let(:options) { default_options }
+
+  subject do
+    described_class.execute('SubjectImage', options)
   end
 
   describe '.execute' do
@@ -88,52 +92,106 @@ RSpec.describe Apress::Images::MasterHashingJob do
         storage_con.execute('TRUNCATE subject_image_hashes')
       end
 
-      it 'enqueues child jobs' do
-        expect(logger).to receive(:info).with('SubjectImage Start master hashing job')
-        expect(::Apress::Images::ChildHashingJob).to receive(:enqueue).with(
-          0,
-          batch_size: 100,
-          batches_count: 1,
-          bucket: [images[2].id, images[3].id],
-          children_count: 4,
-          hashes_table_external_id: 'subject_image_id',
-          hashes_table: 'subject_image_hashes',
-          model: 'SubjectImage'
-        )
-        expect(::Apress::Images::ChildHashingJob).to receive(:enqueue).with(
-          1,
-          batch_size: 100,
-          batches_count: 0,
-          bucket: [images[4].id, images[4].id],
-          children_count: 4,
-          hashes_table_external_id: 'subject_image_id',
-          hashes_table: 'subject_image_hashes',
-          model: 'SubjectImage'
-        )
-        expect(::Apress::Images::ChildHashingJob).to receive(:enqueue).with(
-          2,
-          batch_size: 100,
-          batches_count: 0,
-          bucket: [images[5].id, images[5].id],
-          children_count: 4,
-          hashes_table_external_id: 'subject_image_id',
-          hashes_table: 'subject_image_hashes',
-          model: 'SubjectImage'
-        )
-        expect(::Apress::Images::ChildHashingJob).to receive(:enqueue).with(
-          3,
-          batch_size: 100,
-          batches_count: 1,
-          bucket: [images[6].id, images[7].id],
-          children_count: 4,
-          hashes_table_external_id: 'subject_image_id',
-          hashes_table: 'subject_image_hashes',
-          model: 'SubjectImage'
-        )
-        expect(logger).to receive(:info).with('SubjectImage Finishing master hashing job, '\
-                                              'children status: ["init", "init", "init", "init"]')
+      context 'default behavior' do
+        it 'enqueues child jobs without calculated images' do
+          expect(logger).to receive(:info).with('SubjectImage Start master hashing job')
+          expect(::Apress::Images::ChildHashingJob).to receive(:enqueue).with(
+            0,
+            batch_size: 100,
+            batches_count: 1,
+            bucket: [images[2].id, images[3].id],
+            children_count: 4,
+            hashes_table_external_id: 'subject_image_id',
+            hashes_table: 'subject_image_hashes',
+            model: 'SubjectImage'
+          )
+          expect(::Apress::Images::ChildHashingJob).to receive(:enqueue).with(
+            1,
+            batch_size: 100,
+            batches_count: 0,
+            bucket: [images[4].id, images[4].id],
+            children_count: 4,
+            hashes_table_external_id: 'subject_image_id',
+            hashes_table: 'subject_image_hashes',
+            model: 'SubjectImage'
+          )
+          expect(::Apress::Images::ChildHashingJob).to receive(:enqueue).with(
+            2,
+            batch_size: 100,
+            batches_count: 0,
+            bucket: [images[5].id, images[5].id],
+            children_count: 4,
+            hashes_table_external_id: 'subject_image_id',
+            hashes_table: 'subject_image_hashes',
+            model: 'SubjectImage'
+          )
+          expect(::Apress::Images::ChildHashingJob).to receive(:enqueue).with(
+            3,
+            batch_size: 100,
+            batches_count: 1,
+            bucket: [images[6].id, images[7].id],
+            children_count: 4,
+            hashes_table_external_id: 'subject_image_id',
+            hashes_table: 'subject_image_hashes',
+            model: 'SubjectImage'
+          )
+          expect(logger).to receive(:info).with('SubjectImage Finishing master hashing job, '\
+                                                'children status: ["init", "init", "init", "init"]')
 
-        subject
+          subject
+        end
+      end
+
+      context 'when ignore_last_calculated is set to true' do
+        let(:options) { default_options.merge(ignore_last_calculated: true) }
+
+        it 'enqueues child jobs with all images' do
+          expect(logger).to receive(:info).with('SubjectImage Start master hashing job')
+          expect(::Apress::Images::ChildHashingJob).to receive(:enqueue).with(
+            0,
+            batch_size: 100,
+            batches_count: 1,
+            bucket: [images[0].id, images[1].id],
+            children_count: 4,
+            hashes_table_external_id: 'subject_image_id',
+            hashes_table: 'subject_image_hashes',
+            model: 'SubjectImage'
+          )
+          expect(::Apress::Images::ChildHashingJob).to receive(:enqueue).with(
+            1,
+            batch_size: 100,
+            batches_count: 1,
+            bucket: [images[2].id, images[3].id],
+            children_count: 4,
+            hashes_table_external_id: 'subject_image_id',
+            hashes_table: 'subject_image_hashes',
+            model: 'SubjectImage'
+          )
+          expect(::Apress::Images::ChildHashingJob).to receive(:enqueue).with(
+            2,
+            batch_size: 100,
+            batches_count: 1,
+            bucket: [images[4].id, images[5].id],
+            children_count: 4,
+            hashes_table_external_id: 'subject_image_id',
+            hashes_table: 'subject_image_hashes',
+            model: 'SubjectImage'
+          )
+          expect(::Apress::Images::ChildHashingJob).to receive(:enqueue).with(
+            3,
+            batch_size: 100,
+            batches_count: 1,
+            bucket: [images[6].id, images[7].id],
+            children_count: 4,
+            hashes_table_external_id: 'subject_image_id',
+            hashes_table: 'subject_image_hashes',
+            model: 'SubjectImage'
+          )
+          expect(logger).to receive(:info).with('SubjectImage Finishing master hashing job, '\
+                                                'children status: ["init", "init", "init", "init"]')
+
+          subject
+        end
       end
     end
 
