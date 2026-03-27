@@ -13,6 +13,8 @@ module Apress
       # options - Hash:
       #   children_count - сколько запускать дочерних джобов для насчёта хэшей
       #   batch_size - размер пачки для выборки
+      #   check_for_existence - проверять есть ли для картинки уже посчитанный хэш
+      #   ignore_last_calculated - не смотрим на последний вычисленный хэш и идём с начала
       #   hashes_table - таблица, куда складываем хэши (например product_image_hashes)
       #   hashes_table_external_id - колонка в hashes_table с идами model (например product_image_id)
       #
@@ -23,6 +25,8 @@ module Apress
         @model = model.constantize
         @children_count = options.fetch(:children_count, DEFAULT_CHILDREN_COUNT).to_i
         @batch_size = options.fetch(:batch_size, DEFAULT_BATCH_SIZE).to_i
+        @check_for_existence = options.fetch(:check_for_existence, false)
+        @ignore_last_calculated = options.fetch(:ignore_last_calculated, false)
         @hashes_table = options[:hashes_table]
         @external_id = options[:hashes_table_external_id]
       end
@@ -41,16 +45,21 @@ module Apress
           return
         end
 
-        # Достаём ид последней картинки с вычисленным хэшем
-        @last_hash_id = image_hash_storage_connection.select_one(<<~SQL).values.first.to_i
-          SELECT MAX(#{@external_id})
-          FROM #{@hashes_table};
-        SQL
-
-        return info('Nothing to calculate') if total_batches_count.zero?
-
         # Если нет дочерних джобов, начинаем насчёт хэшей
         if no_children?
+          # Достаём ид последней картинки с вычисленным хэшем
+          @last_hash_id =
+            if @ignore_last_calculated
+              0
+            else
+              image_hash_storage_connection.select_one(<<~SQL).values.first.to_i
+                SELECT MAX(#{@external_id})
+                FROM #{@hashes_table};
+              SQL
+            end
+
+          return info('Nothing to calculate') if total_batches_count.zero?
+
           init_children_status
           async_calculate_hashes
         end
@@ -99,17 +108,18 @@ module Apress
       end
 
       def async_calculate_hashes
+        child_options = {
+          model: @model.to_s,
+          batch_size: @batch_size,
+          children_count: @children_count,
+          hashes_table: @hashes_table,
+          hashes_table_external_id: @external_id
+        }
+        child_options[:check_for_existence] = @check_for_existence if @check_for_existence
+
         images_ids.each_with_index do |bucket, job_id|
-          ::Apress::Images::ChildHashingJob.enqueue(
-            job_id,
-            model: @model.to_s,
-            bucket: bucket,
-            batches_count: batches_count(job_id),
-            batch_size: @batch_size,
-            children_count: @children_count,
-            hashes_table: @hashes_table,
-            hashes_table_external_id: @external_id
-          )
+          ::Apress::Images::ChildHashingJob.
+            enqueue(job_id, child_options.merge(bucket: bucket, batches_count: batches_count(job_id)))
         end
       end
 

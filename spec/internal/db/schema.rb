@@ -52,4 +52,12 @@ ActiveRecord::Schema.define do
   end
   con.add_index :subject_image_hashes, :subject_image_id, unique: true
   con.execute 'CREATE INDEX ON subject_image_hashes USING hnsw (mh_hash_vector_binary bit_hamming_ops);'
+
+  con.create_table :duplicated_image_hashes do |t|
+    t.column :duplicated_image_id, :integer, null: false
+    t.column :mh_hash_vector_binary, :bit, limit: 576
+
+    t.timestamps
+  end
+  con.add_index :duplicated_image_hashes, :duplicated_image_id, unique: true
 end

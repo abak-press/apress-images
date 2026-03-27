@@ -5,6 +5,20 @@ require 'csv'
 module Apress
   module Images
     class ChildHashingService
+      # Public: инициализация сервиса
+      #
+      # job_num - Integer, номер дочернего джоба
+      # options - Hash:
+      #   model - Class модель, для которой считаем хэши картинок (например ProductImage)
+      #   bucket - Array, диапазон идов катинок, по которым этот дочерний сервис будет работать
+      #   children_count - сколько запускать дочерних джобов для насчёта хэшей
+      #   batches_count - количество пачек для обсчёта
+      #   batch_size - размер пачки
+      #   check_for_existence - проверять есть ли для картинки уже посчитанный хэш в хранилище
+      #   hashes_table - таблица, куда складываем хэши (например product_image_hashes)
+      #   hashes_table_external_id - колонка в hashes_table с идами model (например product_image_id)
+      #
+      # Returns ChildHashingService instance
       def initialize(job_num, options)
         options = options.symbolize_keys
 
@@ -13,6 +27,7 @@ module Apress
         @bucket = options[:bucket]
         @batches_count = options[:batches_count].to_i
         @batch_size = options[:batch_size].to_i
+        @check_for_existence = options.fetch(:check_for_existence, false)
         @children_count = options[:children_count]
         @hashes_table = options[:hashes_table]
         @external_id = options[:hashes_table_external_id]
@@ -48,6 +63,7 @@ module Apress
           @model.to_s,
           children_count: @children_count,
           batch_size: @batch_size,
+          check_for_existence: @check_for_existence,
           hashes_table: @hashes_table,
           hashes_table_external_id: @external_id
         )
@@ -63,7 +79,9 @@ module Apress
 
           data = []
 
-          @model.where('id >= ? AND id <= ?', min_id, next_id).each do |image|
+          scope.where('id >= ? AND id <= ?', min_id, next_id).each do |image|
+            next if @check_for_existence && hash_for_image_exists?(image.id)
+
             begin
               mh_hash = ::Apress::Images::CalculateHashService.call(image)
             rescue StandardError => e
@@ -94,6 +112,23 @@ module Apress
         end
 
         finished!
+      end
+
+      # Internal: выборка картинок для обсчёта
+      def scope
+        return @scope if defined? @scope
+
+        @scope =
+          if @model.ancestors.include? Apress::Images::Deduplicable
+            @model.where(fingerprint_parent_id: nil)
+          else
+            @model
+          end
+      end
+
+      # Internal: проверка на существование уже посчитанного для картинки хэша
+      def hash_for_image_exists?(id)
+        image_hash_storage_connection.select_value("SELECT 1 FROM #{@hashes_table} WHERE #{@external_id} = #{id}")
       end
 
       def log_batch

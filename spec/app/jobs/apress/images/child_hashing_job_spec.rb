@@ -10,6 +10,19 @@ RSpec.describe Apress::Images::ChildHashingJob do
   let(:logger) { double('Logger', info: nil) }
   let!(:images) { create_list :subject_image, 3 }
 
+  let(:default_options) do
+    {
+      model: 'SubjectImage',
+      bucket: [images.first.id, images.last.id],
+      batches_count: 1,
+      batch_size: 10,
+      children_count: 4,
+      hashes_table: 'subject_image_hashes',
+      hashes_table_external_id: 'subject_image_id'
+    }
+  end
+  let(:options) { default_options }
+
   before do
     allow_any_instance_of(::Apress::Images::ChildHashingService).to receive(:logger).and_return(logger)
   end
@@ -19,16 +32,7 @@ RSpec.describe Apress::Images::ChildHashingJob do
   end
 
   subject do
-    described_class.execute(
-      0,
-      model: 'SubjectImage',
-      bucket: [images.first.id, images.last.id],
-      batches_count: 1,
-      batch_size: 10,
-      children_count: 4,
-      hashes_table: 'subject_image_hashes',
-      hashes_table_external_id: 'subject_image_id'
-    )
+    described_class.execute(0, options)
   end
 
   context 'when started without master' do
@@ -127,6 +131,91 @@ RSpec.describe Apress::Images::ChildHashingJob do
       expect(storage_con.select_values('select mh_hash_vector_binary from subject_image_hashes').map(&:size)).
         to eq [576, 576, 576]
       expect(failed_ids).to eq [corrupted_image.id]
+    end
+  end
+
+  context 'when hashes exist' do
+    before do
+      Redis.current.set('images:hash_calc:subject_image:job_id:0', 'init')
+
+      img_hash = Apress::Images::CalculateHashService.call(images.first)
+      storage_con.execute <<~SQL
+        INSERT INTO
+          subject_image_hashes (subject_image_id, mh_hash_vector_binary, created_at, updated_at)
+        VALUES
+          (#{images.first.id}, '#{img_hash}', NOW(), NOW())
+      SQL
+    end
+
+    context 'when check_for_existence is false' do
+      it do
+        expect(logger).to receive(:info).with('SubjectImage Job id 0 working')
+        expect(logger).to receive(:info).with('SubjectImage Job id 0 failed')
+        expect(logger).to receive(:info).with('SubjectImage Job id 0 Exiting child hashing job')
+
+        expect(::Apress::Images::MasterHashingJob).to receive :enqueue
+
+        expect { subject }.to raise_error(ActiveRecord::RecordNotUnique)
+
+        expect(Redis.current.get 'images:hash_calc:subject_image:job_id:0').to eq 'failed'
+      end
+    end
+
+    context 'when check_for_existence is true' do
+      let(:options) { default_options.merge(check_for_existence: 'true') }
+
+      it do
+        expect(logger).to receive(:info).with('SubjectImage Job id 0 working')
+        expect(logger).to receive(:info).with('SubjectImage Job id 0 finished')
+        expect(logger).to receive(:info).with('SubjectImage Job id 0 Exiting child hashing job')
+
+        expect(::Apress::Images::MasterHashingJob).to receive :enqueue
+
+        subject
+
+        expect(Redis.current.get 'images:hash_calc:subject_image:job_id:0').to eq 'finished'
+
+        expect(storage_con.select_one('select count(*) from subject_image_hashes').values.first.to_i).to eq 3
+        expect(storage_con.select_values('select subject_image_id from subject_image_hashes').map(&:to_i)).
+          to match_array(images.map(&:id))
+        expect(storage_con.select_values('select mh_hash_vector_binary from subject_image_hashes').map(&:size)).
+          to eq [576, 576, 576]
+      end
+    end
+  end
+
+  context 'when image is duplicate' do
+    # первая картинка будет оригинал, остальные - дубли
+    let!(:images) { create_list :simple_duplicated_image, 3 }
+
+    let(:options) do
+      default_options.merge(
+        model: 'SimpleDuplicatedImage',
+        hashes_table: 'duplicated_image_hashes',
+        hashes_table_external_id: 'duplicated_image_id'
+      )
+    end
+
+    before do
+      Redis.current.set('images:hash_calc:simple_duplicated_image:job_id:0', 'init')
+    end
+
+    it do
+      expect(logger).to receive(:info).with('SimpleDuplicatedImage Job id 0 working')
+      expect(logger).to receive(:info).with('SimpleDuplicatedImage Job id 0 finished')
+      expect(logger).to receive(:info).with('SimpleDuplicatedImage Job id 0 Exiting child hashing job')
+
+      expect(::Apress::Images::MasterHashingJob).to receive :enqueue
+
+      subject
+
+      expect(Redis.current.get 'images:hash_calc:simple_duplicated_image:job_id:0').to eq 'finished'
+
+      expect(storage_con.select_one('select count(*) from duplicated_image_hashes').values.first.to_i).to eq 1
+      expect(storage_con.select_values('select duplicated_image_id from duplicated_image_hashes').map(&:to_i)).
+        to eq [images.first.id]
+      expect(storage_con.select_values('select mh_hash_vector_binary from duplicated_image_hashes').map(&:size)).
+        to eq [576]
     end
   end
 end
