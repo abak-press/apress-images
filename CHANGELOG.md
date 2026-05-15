@@ -1,6 +1,20 @@
+# v7.9.0
+
+* 2026-05-15 [d6cbf06](../../commit/d6cbf06) - __(Mikhail Nelaev)__ Release 7.9.0 
+* 2026-03-27 [545da95](../../commit/545da95) - __(Mikhail Nelaev)__ fix: проверка на fingerprint_parent_id и на существующие записи 
+https://jira.railsc.ru/browse/GOODS-4932
+
+* 2026-03-16 [efb4ebc](../../commit/efb4ebc) - __(Mikhail Nelaev)__ fix: добавит пропущенный инкремент на пустом батче 
+https://jira.railsc.ru/browse/GOODS-4932
+
+* 2026-03-10 [579b6ad](../../commit/579b6ad) - __(Mikhail Nelaev)__ feat: обработка ошибок при расчёте хэшей 
+https://jira.railsc.ru/browse/GOODS-4932
+
+* 2026-02-09 [430b4bf](../../commit/430b4bf) - __(Mikhail Nelaev)__ feat: сервисы для насчёта mh hash у изображений 
+https://jira.railsc.ru/browse/GOODS-4932
+
 # v7.8.5
 
-* 2024-06-17 [c30a8db](../../commit/c30a8db) - __(git2-railsc)__ Release 7.8.5 
 * 2024-05-23 [2176fc1](../../commit/2176fc1) - __(Andrew N. Shalaev)__ fix: check on resizable? before use it 
 * 2024-05-23 [5886214](../../commit/5886214) - __(Andrew N. Shalaev)__ fix: refresh lock files 
 * 2024-05-23 [191ee91](../../commit/191ee91) - __(Andrew N. Shalaev)__ fix: detect not resizable images 
