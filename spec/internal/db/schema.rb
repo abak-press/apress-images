@@ -40,4 +40,24 @@ ActiveRecord::Schema.define do
     t.timestamp :created_at
     t.timestamp :img_updated_at
   end
+
+  con = ActiveRecord::Base.on(:image_hashes_storage).connection
+
+  con.enable_extension 'vector'
+  con.create_table :subject_image_hashes do |t|
+    t.column :subject_image_id, :integer, null: false
+    t.column :mh_hash_vector_binary, :bit, limit: 576
+
+    t.timestamps
+  end
+  con.add_index :subject_image_hashes, :subject_image_id, unique: true
+  con.execute 'CREATE INDEX ON subject_image_hashes USING hnsw (mh_hash_vector_binary bit_hamming_ops);'
+
+  con.create_table :duplicated_image_hashes do |t|
+    t.column :duplicated_image_id, :integer, null: false
+    t.column :mh_hash_vector_binary, :bit, limit: 576
+
+    t.timestamps
+  end
+  con.add_index :duplicated_image_hashes, :duplicated_image_id, unique: true
 end
