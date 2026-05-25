@@ -40,7 +40,7 @@ module Apress
             MIME::Types['image/png']
           ).to_set,
           not_resized_types: [%r{^image/svg}],
-          image_hashes_storage_connection: 'image_hashes_storage',
+          image_hashes_storage_connection: nil, # Задать в проекте, например в ПЦ 'image_hashes_storage'
           hashing_logger: Logger.new(Rails.root.join('log', 'images_hashing.log')).tap do |l|
             l.formatter = Logger::Formatter.new
           end
