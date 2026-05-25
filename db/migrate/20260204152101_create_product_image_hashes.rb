@@ -3,6 +3,7 @@
 class CreateProductImageHashes < ActiveRecord::Migration
   def up
     return if Rails.env.staging?
+    return if conn_name.nil?
 
     conn.enable_extension 'vector'
 
@@ -19,13 +20,18 @@ class CreateProductImageHashes < ActiveRecord::Migration
 
   def down
     return if Rails.env.staging?
+    return if conn_name.nil?
 
     conn.drop_table :product_image_hashes
   end
 
   private
 
+  def conn_name
+    Rails.application.config.images.fetch(:image_hashes_storage_connection)
+  end
+
   def conn
-    ActiveRecord::Base.on(Rails.application.config.images.fetch(:image_hashes_storage_connection)).connection
+    ActiveRecord::Base.on(conn_name).connection
   end
 end

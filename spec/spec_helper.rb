@@ -38,6 +38,8 @@ Redis.current = Redis.new(host: ENV['TEST_REDIS_HOST'])
 Resque.redis = Redis.current
 
 RSpec.configure do |config|
+  Rails.application.config.images[:image_hashes_storage_connection] = 'image_hashes_storage'
+
   config.include FactoryGirl::Syntax::Methods
   config.include Paperclip::Shoulda::Matchers
   config.include ActionDispatch::TestProcess
