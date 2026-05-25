@@ -1,6 +1,10 @@
+# v7.9.1
+
+* 2026-05-25 [0f4c82b](../../commit/0f4c82b) - __(Mikhail Nelaev)__ Release 7.9.1 
+* 2026-05-25 [3b280c7](../../commit/3b280c7) - __(Mikhail Nelaev)__ fix: не прогонять миграцию с pgvector в других гемах 
+
 # v7.9.0
 
-* 2026-05-15 [d6cbf06](../../commit/d6cbf06) - __(Mikhail Nelaev)__ Release 7.9.0 
 * 2026-03-27 [545da95](../../commit/545da95) - __(Mikhail Nelaev)__ fix: проверка на fingerprint_parent_id и на существующие записи 
 https://jira.railsc.ru/browse/GOODS-4932
 
