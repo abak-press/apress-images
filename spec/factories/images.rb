@@ -36,4 +36,12 @@ FactoryGirl.define do
   factory :simple_duplicated_image, class: SimpleDuplicatedImage do
     img { Rack::Test::UploadedFile.new(Rails.root.join('../fixtures/images/sample_image.jpg'), 'image/jpeg') }
   end
+
+  factory :hashable_image, class: HashableImage do
+    img { Rack::Test::UploadedFile.new(Rails.root.join('../fixtures/images/sample_image.jpg'), 'image/jpeg') }
+  end
+
+  factory :hashable_duplicated_image, class: HashableDuplicatedImage do
+    img { Rack::Test::UploadedFile.new(Rails.root.join('../fixtures/images/sample_image.jpg'), 'image/jpeg') }
+  end
 end

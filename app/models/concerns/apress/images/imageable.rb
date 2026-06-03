@@ -85,6 +85,7 @@ module Apress
           end
 
           include Apress::Images::DanglingCleanable if options.fetch(:clean_dangling_images, true)
+          include Apress::Images::Hashable if options.fetch(:hashable, false)
 
           process_in_background(options.slice(:processing_image_url, :queue_name)) if background_processing
         end
