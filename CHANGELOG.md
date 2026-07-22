@@ -1,6 +1,11 @@
+# v7.10.0
+
+* 2026-07-22 [8ea4f9e](../../commit/8ea4f9e) - __(git3-railsc)__ Release 7.10.0 
+* 2026-06-03 [ebdd9a8](../../commit/ebdd9a8) - __(Mikhail Nelaev)__ feat: добавит миксин с логикой работы с хранилищем хэшей 
+https://jira.railsc.ru/browse/GOODS-5073
+
 # v7.9.1
 
-* 2026-05-25 [0f4c82b](../../commit/0f4c82b) - __(Mikhail Nelaev)__ Release 7.9.1 
 * 2026-05-25 [3b280c7](../../commit/3b280c7) - __(Mikhail Nelaev)__ fix: не прогонять миграцию с pgvector в других гемах 
 
 # v7.9.0
