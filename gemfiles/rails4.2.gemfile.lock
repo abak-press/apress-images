@@ -9,7 +9,7 @@ GIT
 PATH
   remote: ..
   specs:
-    apress-images (7.9.1)
+    apress-images (7.10.0)
       addressable (>= 2.3.2)
       apress-api (>= 1.8.0)
       class_logger (~> 1.0.1)
@@ -108,7 +108,7 @@ GEM
     factory_girl_rails (4.9.0)
       factory_girl (~> 4.9.0)
       railties (>= 3.0.0)
-    fugit (1.12.1)
+    fugit (1.12.2)
       et-orbi (~> 1.4)
       raabro (~> 1.4)
     globalid (0.4.2)
