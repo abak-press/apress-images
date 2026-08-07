@@ -41,6 +41,20 @@ ActiveRecord::Schema.define do
     t.timestamp :img_updated_at
   end
 
+  create_table :duplicated_no_background_process_images, force: true do |t|
+    t.references :subject, polymorphic: true
+    t.string :img_file_name
+    t.string :img_content_type
+    t.string :fingerprint
+    t.string :img_fingerprint
+    t.integer :fingerprint_parent_id
+    t.integer :img_file_size
+    t.integer :position, null: false, default: 0
+    t.integer :node, null: false, default: 0
+    t.timestamp :created_at
+    t.timestamp :img_updated_at
+  end
+
   create_table :hashable_duplicated_images, force: true do |t|
     t.references :subject, polymorphic: true
     t.string :img_file_name

@@ -33,6 +33,10 @@ FactoryGirl.define do
     img { Rack::Test::UploadedFile.new(Rails.root.join('../fixtures/images/sample_image.jpg'), 'image/jpeg') }
   end
 
+  factory :duplicated_no_background_process_image, class: DuplicatedNoBackgroundProcessImage do
+    img { Rack::Test::UploadedFile.new(Rails.root.join('../fixtures/images/sample_image.jpg'), 'image/jpeg') }
+  end
+
   factory :simple_duplicated_image, class: SimpleDuplicatedImage do
     img { Rack::Test::UploadedFile.new(Rails.root.join('../fixtures/images/sample_image.jpg'), 'image/jpeg') }
   end
