@@ -77,7 +77,9 @@ module Apress
         DUPLICATE_STATUS_JOB_DELAY = 10.minutes
 
         included do
-          after_commit :enqueue_duplicate_updating, on: :create, if: -> { duplicate? && processing? }
+          after_commit :enqueue_duplicate_updating,
+                       on: :create,
+                       if: -> { duplicate? && respond_to?(:processing?) && processing? }
           after_commit :dequeue_duplicate_updating, on: :destroy, if: :duplicate?
         end
 

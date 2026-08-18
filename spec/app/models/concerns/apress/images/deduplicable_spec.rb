@@ -188,6 +188,22 @@ describe Apress::Images::Deduplicable do
         end
       end
 
+      context 'when no background processing' do
+        let!(:image1) { create :duplicated_no_background_process_image }
+
+        let(:image3) do
+          image = build :duplicated_no_background_process_image
+          image1.position = 123
+
+          image.save!
+          image
+        end
+
+        it do
+          expect(Resque.delayed?(Apress::Images::UpdateDuplicateImageJob, image3.id, image3.class.to_s)).to be_falsey
+        end
+      end
+
       context 'when destroying duplicate' do
         let(:image3) do
           image = build :default_duplicated_image
